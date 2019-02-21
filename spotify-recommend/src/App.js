@@ -1,23 +1,46 @@
 import React, { Component } from 'react';
-import logo from './spotify-logo.png'
-import './App.css';
+import LoginPage from "./login-page.js";
+import RecommendedList from "./recommended-list.js";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    const windowParams = this.getHashParams();
+    const access_token = windowParams.access_token;
+    const refresh_token = windowParams.refresh_token;
+
+    this.state = {
+      isLoggedIn: access_token ? true : false,
+      access_token: access_token ? access_token : null,
+      refresh_token: refresh_token ? refresh_token : null
+    };
+  }
+
+   /**
+   * Obtains parameters from the hash of the URL
+   * @return Object
+   */
+  getHashParams() {
+    let hashParams = {};
+    let e, r = /([^&;=]+)=?([^&;]*)/g,
+        q = window.location.hash.substring(1);
+    while ( e = r.exec(q)) {
+        hashParams[e[1]] = decodeURIComponent(e[2]);
+    }
+    return hashParams;
+  }
+
   render() {
+    let page = this.state.isLoggedIn ? 
+    <RecommendedList access_token = {this.state.access_token}
+                     refresh_token = {this.state.refresh_token}/>
+    : <LoginPage/>;
+    console.log(this.state);
+
     return (
-      <div className = "App">
-        <img className = "logo" src={logo}></img>
-        <header className="App-header"> 
-          <h2>Song Recommender</h2> 
-        </header>
-        <a className="App-link"
-            href = "http://localhost:8888/login">
-           Login to Spotify to begin
-          </a>
-          <a className="App-link">
-            About
-          </a>
-        </div>
+      <div>
+        {page}
+      </div>
     );
   }
 }
