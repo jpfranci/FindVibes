@@ -24,8 +24,18 @@
   margin-bottom: 20vh;
 }
 
+.App-header.list {
+  margin-bottom: -2vh;
+}
+
+.list-item {
+  color: #b9ccc7;
+  list-style-type: none;
+  
+}
+
 .App-link {
-  color: #9de8d3;
+  color: #b9ccc7;
   margin-bottom: 10vh;
   font-size: calc(10px + 2vmin);
 }
