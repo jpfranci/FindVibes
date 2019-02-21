@@ -3,6 +3,9 @@ import LoginPage from "./login-page.js";
 import RecommendedList from "./recommended-list.js";
 
 class App extends Component {
+  /*
+  * Sets state based if this window url has access_token and refresh_token
+  */
   constructor(props) {
     super(props);
     const windowParams = this.getHashParams();
@@ -30,6 +33,9 @@ class App extends Component {
     return hashParams;
   }
 
+  /*
+  * Renders the user's recommended songs if successfully logged in else displays a login page
+  */
   render() {
     let page = this.state.isLoggedIn ? 
     <RecommendedList access_token = {this.state.access_token}

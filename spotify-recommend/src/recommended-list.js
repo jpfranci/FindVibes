@@ -3,22 +3,30 @@ import logo from './spotify-logo.png'
 import './login-page.css';
 import ReactList from 'react-list';
 import SpotifyWebApi from 'spotify-web-api-js';
+import uuid from 'uuid';
 
 class RecommendedList extends Component {
+
+    /*
+    * Constructs this recommendedList and creates a playlist from user's top tracks and artists
+    * @param {string} access_token, access_token to use spotify web api
+    * @param {string} refresh_token, refresh_token used when access_token expires
+    */
     constructor(props) {
         super(props);
         this.state = {
             access_token: this.props.access_token,
             refresh_token: this.props.refresh_token,
             recommendedList: [],
-            // Arrays of spotify id's of user's top artists and top tracks
-            topArtists: [],
-            topTracks: []
         };
 
         this.getRecommended();
     }
 
+    /*
+    * Gets recommended songs from user's top tracks and top artists in the past 6 months, and sets
+    * this.state accordingly. Creates a playlist from recommended songs
+    */
     async getRecommended() {
         try {
         const spotifyApi = new SpotifyWebApi();
@@ -46,6 +54,7 @@ class RecommendedList extends Component {
         this.createPlaylist(spotifyApi);
         } catch (error) {
             if (error.status) {
+                // error code 401 occurs when the access token has expired
                 if (error.status == 401) {
                     // get renewed access token
                     window.location.href = 'http://localhost:8888/login'
@@ -55,12 +64,16 @@ class RecommendedList extends Component {
         }
     }
 
+    /*
+    * Creates playlist based on list of recommended songs in this.state
+    * @param {SpotifyWebApi}, a SpotifyWebApi with access_code already in it
+    */
     async createPlaylist(spotifyApi) {
         try {
             const recommendedListSongs = await this.state.recommendedList.map(song => 'spotify:track:' + song.id);
             const userId = await spotifyApi.getMe();
             const recommendedPlaylist = await spotifyApi.createPlaylist(userId.id, 
-                {name: "Recommended Playlist", description: "made from my react app", public: false});
+                {name: "Recommended Playlist " + uuid.v1(), description: "made from my react app", public: false});
             const addToPlaylist = await spotifyApi.addTracksToPlaylist(recommendedPlaylist.id, recommendedListSongs);
         } catch(error) {
             console.log(error);
