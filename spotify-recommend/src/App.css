@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+.App {
+  text-align: center;
+  background-color: #1f2127;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+}
+
+
+
+.logo {
+  width: 70vh;
+  height: 30vh;
+}
+
+.App-header {
+  padding: 1vh;
+  border-radius: 5vh;
+  font-size: calc(10px + 3vmin);
+  color: #3aaf4e;
+  margin-top: -14vh;
+  margin-bottom: 20vh;
+}
+
+.App-link {
+  color: #a4e1ae;
+  margin-bottom: 10vh;
+  font-size: calc(10px + 2vmin);
+}
