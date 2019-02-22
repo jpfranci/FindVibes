@@ -71,8 +71,9 @@
 }
 
 .audio-preview {
-  width: 35vh;
-
+  width: 7vh;
+  height: 7vh;
+  color: black;
 }
 
 .album-cover {
@@ -92,8 +93,10 @@
 
 .collapsible-header {
   margin-left: -1vh;
+  margin-top: -3vh;
   font-family: 'Open Sans';
   font-weight: 400;
+  color:  #c8d1c8;
 }
 
 .expand-button {
@@ -107,7 +110,6 @@
 .list-item-li:nth-child(odd){
   background-color: #c8d1c8;
   color:  #41503e;
-
 }
 
 .list-item-li:nth-child(even) {

@@ -20,10 +20,12 @@ class RecommendedList extends Component {
             recommendedList: [],
             country: null,
             error: null,
-            audio_url:"https://p.scdn.co/mp3-preview/1472b9d5b92f0ba85e3d84347fad0c558843d98e?cid=932fead81902483fa625c45870b2c5ad",
+            audio_url:"",
+            isPlaying: false,
             isLoaded: false
         };
-
+        this.renderItem = this.renderItem.bind(this);
+        this.onPlayClickedAudio = this.onPlayClickedAudio.bind(this);
         this.getRecommended();
     }
 
@@ -118,12 +120,34 @@ class RecommendedList extends Component {
     }
 
     onPlayClickedAudio(audio_url) {
-        if (document.getElementById('audio-playera')) {
-            let audioPlayer = document.getElementById('audio-playera');
-            audioPlayer.audio = 0.5;
-            audioPlayer.currentSrc = audio_url;
-            audioPlayer.play();
-        }
+        if (document.getElementById('audio-player') && audio_url && audio_url !== "") {
+            let audioPlayer = document.getElementById('audio-player');
+            let audioSource = document.getElementById('audio-player-source');
+
+            // pause button hit
+            if (audio_url === this.state.audio_url) {
+                if (this.state.isPlaying) {
+                    audioPlayer.pause();
+                    this.setState({
+                        isPlaying: false
+                    })
+                } else {
+                    audioPlayer.play();
+                    this.setState({
+                        isPlaying: true
+                    })
+                }        
+            } else {
+                audioSource.src = audio_url;
+                audioPlayer.load();
+                audioPlayer.volume = 0.3;
+                audioPlayer.play();
+                this.setState({
+                    audio_url: audio_url,
+                    isPlaying: true
+                })
+            }
+        } 
     }
 
       /*
@@ -136,8 +160,10 @@ class RecommendedList extends Component {
     return <RecommendedListItem 
                 listItem = {listItem} 
                 key = {listItem.id}
+                playClicked = {this.onPlayClickedAudio}
+                isPlaying = {listItem.preview_url === this.state.audio_url && this.state.isPlaying}
                 />;
-}
+   }
 
     render() {
         if (this.state.isLoaded) {
@@ -148,10 +174,12 @@ class RecommendedList extends Component {
                     <header className="App-header list"> 
                         <h2>Song Recommendations</h2> 
                     </header>
-                    <audio src = {"https://p.scdn.co/mp3-preview/1472b9d5b92f0ba85e3d84347fad0c558843d98e?cid=932fead81902483fa625c45870b2c5ad"}
-                           className = "audio-player" 
-                           id = {'audio-playera'}      
-                           controls/>
+                    <audio 
+                        className = "audio-player" 
+                        id = {'audio-player'} 
+                        controls>
+                        <source id = {'audio-player-source'} src = {this.state.preview_url}></source>
+                    </audio>
                     <ol>
                         {listItems}
                     </ol>

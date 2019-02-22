@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import './login-page.css';
 import {Collapse} from 'react-collapse';
-import logo from './spotify-logo.png'
 import {FaSpotify} from 'react-icons/fa';
 import {IoIosPlayCircle, IoIosArrowDown} from "react-icons/io";
-import expandButton from './expand-button.png';
+import {MdClose, MdPauseCircleFilled} from "react-icons/md";
 
 class RecommendedListItem extends Component {
     constructor(props) {
         super(props);
         const listItem = this.props.listItem;
-
         this.state = {
             albumName: listItem.album.name,
             albumUrl: listItem.album.external_urls.spotify,
@@ -29,11 +27,6 @@ class RecommendedListItem extends Component {
         this.handleUrlClick = this.handleUrlClick.bind(this);
     }
 
-    componentDidMount() {
-        let doc = document.getElementById(this.state.id);
-        doc.scrollIntoView();
-    }
-
     handleListItemClicked() {
         this.setState (state => ({
             isOpened: !state.isOpened
@@ -49,6 +42,25 @@ class RecommendedListItem extends Component {
     }
 
     render() {
+        let playOrPause;   
+        if (!this.state.previewUrl) {
+            playOrPause = <MdClose 
+                className = "audio-preview" 
+                id = {this.state.previewUrl}/>
+        } else {
+            playOrPause = this.props.isPlaying ? 
+                <MdPauseCircleFilled
+                    className = "audio-preview" 
+                    id = {this.state.previewUrl}
+                    onClick = {this.onPlayClicked.bind(this)}/>
+                : 
+                <IoIosPlayCircle 
+                    className = "audio-preview" 
+                    id = {this.state.previewUrl}
+                    onClick = {this.onPlayClicked.bind(this)}
+                />     
+        }
+         
         return (
             <li 
                 id = {this.state.id} 
@@ -68,11 +80,7 @@ class RecommendedListItem extends Component {
                         onClick = {() => {this.handleUrlClick('spotifyUrl')}}
                         className = "url-logo" 
                         alt = "spotify link"/>
-                    <audio src = {this.state.previewUrl}
-                           className = "audio-preview" 
-                           id = {this.state.previewUrl}      
-                           controls/>
-  
+                    {playOrPause}
                     <IoIosArrowDown 
                         onClick = {this.handleListItemClicked}
                         className = 'expand-button'/>      
@@ -80,6 +88,7 @@ class RecommendedListItem extends Component {
                 <Collapse isOpened = {this.state.isOpened}> 
                     <div className = "collapsible">
                         <h2 className = "collapsible-header">{"Top Tracks by " + this.state.artistName}</h2>
+
                     </div>
                 </Collapse>
             </li>
