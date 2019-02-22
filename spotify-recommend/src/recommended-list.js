@@ -19,6 +19,7 @@ class RecommendedList extends Component {
             refresh_token: this.props.refresh_token,
             recommendedList: [],
             country: null,
+            error: null,
             isLoaded: false
         };
 
@@ -55,12 +56,12 @@ class RecommendedList extends Component {
         } catch (error) {
             if (error.status) {
                 // error code 401 occurs when the access token has expired
-                if (error.status == 401) {
+                if (error.status === 401) {
                     // get renewed access token
                     window.location.href = 'http://localhost:8888/login'
                 }
             } else 
-            console.log(error);
+                console.log(error);       
         }
     }
 
@@ -83,7 +84,8 @@ class RecommendedList extends Component {
                 country: userId.country,
             });
 
-            let addedTopTracks = await this.state.recommendedList.map((track) => this.addTopTracks(track, this.state.country));
+            let addedTopTracks = await this.state.recommendedList.map
+                ((track) => this.addTopTracks(track, this.state.country));
             // used to resolve promise array returned by mapping each track to a promise in async call
             addedTopTracks = await Promise.all(addedTopTracks);
 
@@ -91,8 +93,9 @@ class RecommendedList extends Component {
                 recommendedList: addedTopTracks,
                 isLoaded: true
             })
+            console.log(this.state);
         } catch(error) {
-            console.log(error);
+            console.log(error);     
         }
     }
 
@@ -113,20 +116,25 @@ class RecommendedList extends Component {
         }
     }
 
+    /*
+    * Renders a RecommendedListItem with prop.listItem set to listItem
+    * @param {Object}, listItem a recommendedListItem consisting of a song, producing artist's top songs,
+    * popularity, song url, album info, etc.
+    * @returns {RecommendedListItem}, returns a rendered RecommendedListItem
+    */
     renderItem(listItem) {
-        return <li className = "list-item" key = {listItem.id}>{listItem.name}</li>
+        return <RecommendedListItem listItem = {listItem} key = {listItem.id}/>;
     }
 
     render() {
         if (this.state.isLoaded) {
-            let index = 0;
             let listItems = this.state.recommendedList.map(this.renderItem);
             return(
                 <div className = "App">
-                    <img className = "logo" src={logo}></img>
-                        <header className="App-header list"> 
-                            <h2>Song Recommender</h2> 
-                        </header>
+                    <img className = "logo" src={logo} alt = {'problem here'}></img>
+                    <header className="App-header list"> 
+                        <h2>Song Recommendations</h2> 
+                    </header>
                     <ol>
                         {listItems}
                     </ol>
@@ -135,7 +143,7 @@ class RecommendedList extends Component {
         } else {
             return(
                 <div className = "App">
-                    <img className = "logo" src={logo}></img>
+                    <img className = "logo" src={logo} alt = {'problem here'}></img>
                     <header className="App-header"> 
                         <h2>Song Recommender</h2> 
                     </header>
@@ -145,6 +153,8 @@ class RecommendedList extends Component {
                         size = {3}
                         loading = {true}
                     />   
+                    <h2 className = 'loading-label'>Making your recommended playlist</h2>
+                    {this.state.error}
                 </div>        
             )
         }

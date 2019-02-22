@@ -4,22 +4,27 @@
   text-align: center;
   background-color: #1f2127;
   min-height: 100vh;
+  min-width: 130vh;
+  background-repeat: repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .logo {
   width: 70vh;
   height: 30vh;
+  position: relative;
+  left: -1%;
 }
 
 .App-header {
   padding: 1vh;
-  border-radius: 5vh;
   font-size: calc(10px + 3vmin);
   color: #4dcc62;
+  position: relative;
+  left: -1%;
   margin-top: -14vh;
   margin-bottom: 20vh;
 }
@@ -29,13 +34,97 @@
 }
 
 .list-item {
-  color: #b9ccc7;
+  display: flex;
+  font-size: 2vmin;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.list-item-li {
   list-style-type: none;
-  
+  position: relative;
+  left: -4%;
+  margin: 1vh;
+  border-radius: 2vh;
+  min-width: 70vh;
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  transition-duration: 0.3s;
+  transition-property: box-shadow, transform;
+}
+
+.list-item-li:hover, .list-item-li:focus, .list-item-li:active {
+  box-shadow: 1px 5px 5px -5px rgba(0, 0, 24, 0.5);
+  transform: scale(1.1);
+}   
+
+.song-details{
+  width: 35vh;
+  padding-right: 2vh;
+  padding-left: 2vh;
+  font-family: 'Open Sans';
+}
+
+.audio-preview {
+  width: 35vh;
+}
+
+.album-cover {
+  margin: 1vh;
+}
+
+.collapsible {
+  min-height: 10vh;
+  font-family: 'Open Sans';
+  background: #868b74;
+  border-bottom-left-radius: 2vh;
+  border-bottom-right-radius: 2vh;
+  padding: 4vh;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.collapsible-header {
+  color: white;
+  margin-top: -2vh;
+  margin-left: -1vh;
+  font-family: 'Open Sans';
+  font-weight: 400;
+}
+
+.expand-button {
+  opacity: 70%;
+  padding-left: 2vh;
+  padding-right: 1vh;
+  width: 5vh;
+  height: 5vh;
+}
+
+.list-item-li:nth-child(odd){
+  background-color: #c8d1c8;
+  color:  #41503e;
+
+}
+
+.list-item-li:nth-child(even) {
+  background-color: #758975;
+  color:  #c8d1c8;
 }
 
 .App-link {
   color: #b9ccc7;
   margin-bottom: 10vh;
   font-size: calc(10px + 2vmin);
+}
+
+.url-logo {
+  height: 10vh;
+  width: 22vh;
+  margin-right: -3vh;
+  margin-left: -3vh;
+}
+
+.loading-label {
+  color: #4dcc62;
 }
