@@ -20,12 +20,14 @@ class RecommendedList extends Component {
             recommendedList: [],
             country: null,
             error: null,
-            audio_url:"",
+            audio_url: "",
             isPlaying: false,
-            isLoaded: false
+            isLoaded: false,
+            playListId: null
         };
         this.renderItem = this.renderItem.bind(this);
         this.onPlayClickedAudio = this.onPlayClickedAudio.bind(this);
+        this.addToPlayList = this.addToPlayList.bind(this);
         this.getRecommended();
     }
 
@@ -44,13 +46,12 @@ class RecommendedList extends Component {
         const topArtists = await spotifyApi.getMyTopArtists({limit: 5, offset: 0, time_range: 'medium_term'});
         let topArtistsArray = await topArtists.items.map(artist => artist.id);
  
-        let recommendedFromSongs = await spotifyApi.getRecommendations({limit: 30, 
+        let recommendedFromSongs = await spotifyApi.getRecommendations({limit: 35, 
           seed_artists: topArtistsArray});
-        let recommendedFromArtists = await spotifyApi.getRecommendations({limit: 20, 
+        let recommendedFromArtists = await spotifyApi.getRecommendations({limit: 15, 
             seed_tracks: topSongsArray});
         
         recommendedFromSongs = recommendedFromSongs.tracks.concat(recommendedFromArtists.tracks);
-
         await this.setState({
             recommendedList: recommendedFromSongs
         });
@@ -76,14 +77,15 @@ class RecommendedList extends Component {
         try {
             const recommendedListSongs = await this.state.recommendedList.map(song => 'spotify:track:' + song.id);
             const userId = await spotifyApi.getMe();
-            /*
+            
             const recommendedPlaylist = await spotifyApi.createPlaylist(userId.id, 
                 {name: "Recommended Playlist " + uuid.v1(), 
                 description: "made from spotify song recommender", public: false});
             const addToPlaylist = await spotifyApi.addTracksToPlaylist
                 (recommendedPlaylist.id, recommendedListSongs);
-            */
+            
             await this.setState({
+                playListId: recommendedPlaylist.id,
                 country: userId.country,
             });
 
@@ -99,6 +101,15 @@ class RecommendedList extends Component {
             console.log(this.state);
         } catch(error) {
             console.log(error);     
+        }
+    }
+
+    async addToPlayList(songId, callback) {
+        try {
+            await spotifyApi.addTracksToPlaylist(this.state.playListId, ['spotify:track:' + songId], {position: 0});
+            callback();
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -161,8 +172,10 @@ class RecommendedList extends Component {
                 listItem = {listItem} 
                 key = {listItem.id}
                 playClicked = {this.onPlayClickedAudio}
-                isPlaying = {listItem.preview_url === this.state.audio_url && this.state.isPlaying}
-                />;
+                currentPlaying = {this.state.audio_url}
+                isCurrentlyPlaying = {this.state.isPlaying}
+                addToPlayList = {this.addToPlayList}
+            />;
    }
 
     render() {

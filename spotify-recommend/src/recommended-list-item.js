@@ -1,30 +1,23 @@
 import React, { Component } from 'react';
 import './login-page.css';
-import {Collapse} from 'react-collapse';
-import {FaSpotify} from 'react-icons/fa';
-import {IoIosPlayCircle, IoIosArrowDown} from "react-icons/io";
-import {MdClose, MdPauseCircleFilled} from "react-icons/md";
+import { Collapse } from 'react-collapse';
+import { FaVolumeSlash } from 'react-icons/fa';
+import { IoIosPlayCircle, IoIosArrowDown } from "react-icons/io";
+import { MdClose, MdPauseCircleFilled } from "react-icons/md";
+import { Line, Circle } from 'rc-progress';
+import  SongInfo from './song-info.js';
 
 class RecommendedListItem extends Component {
     constructor(props) {
         super(props);
-        const listItem = this.props.listItem;
         this.state = {
-            albumName: listItem.album.name,
-            albumUrl: listItem.album.external_urls.spotify,
-            artistName: listItem.artists[0].name,
-            albumCover: listItem.album.images[2].url,
-            id: listItem.id,
-            previewUrl: listItem.preview_url,
-            songName: listItem.name, 
-            spotifyUrl: listItem.external_urls.spotify,
-            popularity: listItem.popularity, 
-            topTracks: listItem.topTracks,
+            topTracks: this.props.listItem.topTracks,
             isOpened: false
         }
-        this.scrollRef = React.createRef();
         this.handleListItemClicked = this.handleListItemClicked.bind(this);
-        this.handleUrlClick = this.handleUrlClick.bind(this);
+        this.onPlayClicked = this.onPlayClicked.bind(this); 
+        this.renderTopTrack = this.renderTopTrack.bind(this);
+        this.getPlayOrPause = this.getPlayOrPause.bind(this);
     }
 
     handleListItemClicked() {
@@ -33,62 +26,82 @@ class RecommendedListItem extends Component {
         }));
     }
 
-    handleUrlClick(urlType) {
-        window.open(this.state[urlType], '_blank');
+    onPlayClicked(previewUrl) {
+        this.props.playClicked(previewUrl);
     }
 
-    onPlayClicked() {
-        this.props.playClicked(this.state.previewUrl);
+    renderTopTrack(track) {
+        const playOrPause = this.getPlayOrPause(track.preview_url);
+        const listItem = this.props.listItem;   
+        return(
+            <SongInfo 
+                albumName = {track.album.name}
+                albumUrl = {track.album.external_urls.spotify}
+                artistName = {track.artists[0].name}
+                albumCover = {track.album.images[2].url}
+                previewUrl = {track.preview_url}
+                songName = {track.name}
+                id = {track.id}
+                playInfo = {playOrPause}
+                handlePlayClick = {this.onPlayClicked}
+                handleArrowClick = {this.props.addToPlayList}
+                spotifyUrl = {listItem.external_urls.spotify}
+                popularity = {listItem.popularity}
+                isExpandable = {false}
+            />
+            )
+    }
+
+    getPlayOrPause(previewUrl) {
+        const listItem = this.props.listItem;   
+        const isPlaying = (previewUrl === this.props.currentPlaying && this.props.isCurrentlyPlaying);
+        if (!listItem.preview_url) {
+            return (<FaVolumeSlash 
+                className = "list-item-child audio-preview" 
+                id = {this.state.previewUrl}/>)
+        } else {
+            return isPlaying ? 
+                <MdPauseCircleFilled
+                    className = "list-item-child audio-preview" 
+                    id = {this.state.previewUrl}
+                />
+                : 
+                <IoIosPlayCircle 
+                    className = "list-item-child audio-preview" 
+                    id = {this.state.previewUrl}
+                />     
+        }
     }
 
     render() {
-        let playOrPause;   
-        if (!this.state.previewUrl) {
-            playOrPause = <MdClose 
-                className = "audio-preview" 
-                id = {this.state.previewUrl}/>
-        } else {
-            playOrPause = this.props.isPlaying ? 
-                <MdPauseCircleFilled
-                    className = "audio-preview" 
-                    id = {this.state.previewUrl}
-                    onClick = {this.onPlayClicked.bind(this)}/>
-                : 
-                <IoIosPlayCircle 
-                    className = "audio-preview" 
-                    id = {this.state.previewUrl}
-                    onClick = {this.onPlayClicked.bind(this)}
-                />     
-        }
-         
+        const playOrPause = this.getPlayOrPause(this.props.listItem.preview_url);
+        const listItem = this.props.listItem;
+        const listItemTracks = listItem.topTracks.tracks;   
+        let renderTopTracks = listItemTracks.map(this.renderTopTrack);
+    
         return (
             <li 
-                id = {this.state.id} 
-                className = 'list-item-li' >
-                <div className = "list-item">
-                    <img 
-                        src = {this.state.albumCover} 
-                        onClick = {() => {this.handleUrlClick('albumUrl')}}
-                        className = "album-cover"
-                        alt = "album cover"/>
-                    <h2 
-                        className = "song-details"
-                        onClick = {this.handleListItemClicked}>
-                        {this.state.artistName + " - " + this.state.songName} 
-                    </h2>     
-                    <FaSpotify 
-                        onClick = {() => {this.handleUrlClick('spotifyUrl')}}
-                        className = "url-logo" 
-                        alt = "spotify link"/>
-                    {playOrPause}
-                    <IoIosArrowDown 
-                        onClick = {this.handleListItemClicked}
-                        className = 'expand-button'/>      
-                </div>
+                id = {listItem.id} 
+                className = 'list-item-li'>
+                <SongInfo 
+                    albumName = {listItem.album.name}
+                    albumUrl = {listItem.album.external_urls.spotify}
+                    artistName = {listItem.artists[0].name}
+                    albumCover = {listItem.album.images[2].url}
+                    previewUrl = { listItem.preview_url}
+                    songName = {listItem.name}
+                    id = {listItem.id}
+                    playInfo = {playOrPause}
+                    handlePlayClick = {this.onPlayClicked}
+                    handleArrowClick = {this.handleListItemClicked}
+                    spotifyUrl = {listItem.external_urls.spotify}
+                    popularity = {listItem.popularity}
+                    isExpandable = {true}
+                />
                 <Collapse isOpened = {this.state.isOpened}> 
                     <div className = "collapsible">
-                        <h2 className = "collapsible-header">{"Top Tracks by " + this.state.artistName}</h2>
-
+                        <h2 className = "collapsible-header">{"Top Tracks by " + listItem.artists[0].name}</h2>
+                        {renderTopTracks}
                     </div>
                 </Collapse>
             </li>
