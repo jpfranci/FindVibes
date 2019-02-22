@@ -28,6 +28,7 @@ class RecommendedList extends Component {
         this.renderItem = this.renderItem.bind(this);
         this.onPlayClickedAudio = this.onPlayClickedAudio.bind(this);
         this.addToPlayList = this.addToPlayList.bind(this);
+        this.removeFromPlayList = this.removeFromPlayList.bind(this);
         this.getRecommended();
     }
 
@@ -77,17 +78,22 @@ class RecommendedList extends Component {
         try {
             const recommendedListSongs = await this.state.recommendedList.map(song => 'spotify:track:' + song.id);
             const userId = await spotifyApi.getMe();
-            
+  
             const recommendedPlaylist = await spotifyApi.createPlaylist(userId.id, 
                 {name: "Recommended Playlist " + uuid.v1(), 
                 description: "made from spotify song recommender", public: false});
-            const addToPlaylist = await spotifyApi.addTracksToPlaylist
-                (recommendedPlaylist.id, recommendedListSongs);
-            
+            await spotifyApi.addTracksToPlaylist
+                (recommendedPlaylist.id, recommendedListSongs);       
             await this.setState({
                 playListId: recommendedPlaylist.id,
                 country: userId.country,
             });
+
+            /*
+            let playListWindow = window.open(recommendedPlaylist.external_urls.spotify);
+            playListWindow.blur();
+            window.focus();
+            */
 
             let addedTopTracks = await this.state.recommendedList.map
                 ((track) => this.addTopTracks(track, this.state.country));
@@ -104,9 +110,30 @@ class RecommendedList extends Component {
         }
     }
 
+    /*
+    * Adds song to playlist based on this
+    * @param {songId}, a spotify id for a song 
+    * @param {callback}, a callback function for the caller
+    */
     async addToPlayList(songId, callback) {
         try {
-            await spotifyApi.addTracksToPlaylist(this.state.playListId, ['spotify:track:' + songId], {position: 0});
+            await spotifyApi.addTracksToPlaylist(this.state.playListId, 
+                ['spotify:track:' + songId], {position: 0});
+            callback();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    /*
+    * Removes song from this spotify playlist
+    * @param {songId}, a spotify id for a song 
+    * @param {callback}, a callback function for the caller
+    */
+    async removeFromPlayList(songId, callback) {
+        try {
+            await spotifyApi.removeTracksFromPlaylist(this.state.playListId, 
+                ['spotify:track:' + songId]);
             callback();
         } catch (error) {
             console.log(error);
@@ -130,12 +157,16 @@ class RecommendedList extends Component {
         }
     }
 
+    /*
+    * Plays or pauses a given audio_url in this player
+    * @param {audio_url}, a url to an audio recording
+    * @returns {RecommendedListItem}, returns a rendered RecommendedListItem
+    */
     onPlayClickedAudio(audio_url) {
         if (document.getElementById('audio-player') && audio_url && audio_url !== "") {
             let audioPlayer = document.getElementById('audio-player');
             let audioSource = document.getElementById('audio-player-source');
 
-            // pause button hit
             if (audio_url === this.state.audio_url) {
                 if (this.state.isPlaying) {
                     audioPlayer.pause();
@@ -161,7 +192,7 @@ class RecommendedList extends Component {
         } 
     }
 
-      /*
+    /*
     * Renders a RecommendedListItem with prop.listItem set to listItem
     * @param {Object}, listItem a recommendedListItem consisting of a song, producing artist's top songs,
     * popularity, song url, album info, etc.
@@ -175,6 +206,7 @@ class RecommendedList extends Component {
                 currentPlaying = {this.state.audio_url}
                 isCurrentlyPlaying = {this.state.isPlaying}
                 addToPlayList = {this.addToPlayList}
+                removeFromPlayList = {this.removeFromPlayList}
             />;
    }
 

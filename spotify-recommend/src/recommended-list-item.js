@@ -3,8 +3,7 @@ import './login-page.css';
 import { Collapse } from 'react-collapse';
 import { FaVolumeSlash } from 'react-icons/fa';
 import { IoIosPlayCircle, IoIosArrowDown } from "react-icons/io";
-import { MdClose, MdPauseCircleFilled } from "react-icons/md";
-import { Line, Circle } from 'rc-progress';
+import { MdPauseCircleFilled } from "react-icons/md";
 import  SongInfo from './song-info.js';
 
 class RecommendedListItem extends Component {
@@ -35,6 +34,7 @@ class RecommendedListItem extends Component {
         const listItem = this.props.listItem;   
         return(
             <SongInfo 
+                key = {track.id}
                 albumName = {track.album.name}
                 albumUrl = {track.album.external_urls.spotify}
                 artistName = {track.artists[0].name}
@@ -45,6 +45,7 @@ class RecommendedListItem extends Component {
                 playInfo = {playOrPause}
                 handlePlayClick = {this.onPlayClicked}
                 handleArrowClick = {this.props.addToPlayList}
+                removeFromPlayList = {this.props.removeFromPlayList}
                 spotifyUrl = {listItem.external_urls.spotify}
                 popularity = {listItem.popularity}
                 isExpandable = {false}
@@ -81,7 +82,7 @@ class RecommendedListItem extends Component {
     
         return (
             <li 
-                id = {listItem.id} 
+                key = {listItem.id} 
                 className = 'list-item-li'>
                 <SongInfo 
                     albumName = {listItem.album.name}

@@ -10,14 +10,16 @@ class LoginPage extends Component {
         <header className="App-header"> 
           <h2>Song Recommender</h2> 
         </header>
-        <a className="App-link"
-            href = "http://localhost:8888/login">
-           Login to Spotify to begin
-          </a>
-          <a className="App-link">
-            About
-          </a>
+        <div className = "opening-screen">
+          <a className="App-link"
+              href = "http://localhost:8888/login">
+            Login to Spotify to begin
+            </a>
+            <a className="App-link">
+              About
+            </a>
         </div>
+      </div>
     );
   }
 }

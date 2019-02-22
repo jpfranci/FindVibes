@@ -15,6 +15,15 @@
 .audio-player {
 }
 
+.opening-screen {
+  display: flex;
+  justify-content: space-around;
+  align-content: space-around;
+  width: 60vh;
+  flex-direction: column;
+  margin-right: 4vh;
+}
+
 .logo {
   width: 70vh;
   height: 30vh;
@@ -130,9 +139,17 @@
 }
 
 .App-link {
-  color: #b9ccc7;
-  margin-bottom: 10vh;
+  color: black;
   font-size: calc(10px + 2vmin);
+  font-family: 'Open Sans';
+  background: #4dcc62;
+  margin: 2vh;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3vh;
+  padding: 2vh;
 }
 
 .url-logo {

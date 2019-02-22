@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './login-page.css';
 import { FaSpotify, FaPlus, FaCheck } from 'react-icons/fa';
-import { IoIosPlayCircle, IoIosArrowDown } from "react-icons/io";
-import { MdClose, MdPauseCircleFilled } from "react-icons/md";
+import { IoIosArrowDown } from "react-icons/io";
+import { timingSafeEqual } from 'crypto';
 
 class SongInfo extends Component {
     constructor(props) {
@@ -21,7 +21,7 @@ class SongInfo extends Component {
 
     addedToPlaylist() {
         this.setState({
-            isAddedToPlayList: true
+            isAddedToPlayList: !this.state.isAddedToPlayList
         })
     }
 
@@ -34,7 +34,10 @@ class SongInfo extends Component {
                     className = 'list-item-child expand-button'
                 />
         } else if (this.state.isAddedToPlayList) {
-            addIconOrExpandable = <FaCheck className = 'list-item-child expand-button'/>
+            addIconOrExpandable = <FaCheck 
+                className = 'list-item-child expand-button'
+                onClick = {() => {this.props.removeFromPlayList(this.props.id, this.addedToPlaylist)}}
+            />
         } else {
             addIconOrExpandable = <FaPlus
                 onClick = {() => {this.props.handleArrowClick(this.props.id, this.addedToPlaylist)}}
