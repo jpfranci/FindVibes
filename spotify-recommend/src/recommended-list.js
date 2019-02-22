@@ -20,6 +20,7 @@ class RecommendedList extends Component {
             recommendedList: [],
             country: null,
             error: null,
+            audio_url:"https://p.scdn.co/mp3-preview/1472b9d5b92f0ba85e3d84347fad0c558843d98e?cid=932fead81902483fa625c45870b2c5ad",
             isLoaded: false
         };
 
@@ -116,15 +117,27 @@ class RecommendedList extends Component {
         }
     }
 
-    /*
+    onPlayClickedAudio(audio_url) {
+        if (document.getElementById('audio-playera')) {
+            let audioPlayer = document.getElementById('audio-playera');
+            audioPlayer.audio = 0.5;
+            audioPlayer.currentSrc = audio_url;
+            audioPlayer.play();
+        }
+    }
+
+      /*
     * Renders a RecommendedListItem with prop.listItem set to listItem
     * @param {Object}, listItem a recommendedListItem consisting of a song, producing artist's top songs,
     * popularity, song url, album info, etc.
     * @returns {RecommendedListItem}, returns a rendered RecommendedListItem
     */
-    renderItem(listItem) {
-        return <RecommendedListItem listItem = {listItem} key = {listItem.id}/>;
-    }
+   renderItem(listItem) {
+    return <RecommendedListItem 
+                listItem = {listItem} 
+                key = {listItem.id}
+                />;
+}
 
     render() {
         if (this.state.isLoaded) {
@@ -135,6 +148,10 @@ class RecommendedList extends Component {
                     <header className="App-header list"> 
                         <h2>Song Recommendations</h2> 
                     </header>
+                    <audio src = {"https://p.scdn.co/mp3-preview/1472b9d5b92f0ba85e3d84347fad0c558843d98e?cid=932fead81902483fa625c45870b2c5ad"}
+                           className = "audio-player" 
+                           id = {'audio-playera'}      
+                           controls/>
                     <ol>
                         {listItems}
                     </ol>

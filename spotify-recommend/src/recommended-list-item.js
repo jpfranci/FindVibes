@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './login-page.css';
 import {Collapse} from 'react-collapse';
 import logo from './spotify-logo.png'
+import {FaSpotify} from 'react-icons/fa';
+import {IoIosPlayCircle, IoIosArrowDown} from "react-icons/io";
 import expandButton from './expand-button.png';
 
 class RecommendedListItem extends Component {
@@ -30,9 +32,6 @@ class RecommendedListItem extends Component {
     componentDidMount() {
         let doc = document.getElementById(this.state.id);
         doc.scrollIntoView();
-        if (this.state.previewUrl) {
-            document.getElementById(this.state.previewUrl).volume = 0.5;
-        }
     }
 
     handleListItemClicked() {
@@ -45,29 +44,38 @@ class RecommendedListItem extends Component {
         window.open(this.state[urlType], '_blank');
     }
 
+    onPlayClicked() {
+        this.props.playClicked(this.state.previewUrl);
+    }
+
     render() {
         return (
-            <li  id = {this.state.id} className = 'list-item-li' >
-                <div ref className = "list-item">
-                    <img src = {this.state.albumCover} 
-                         onClick = {() => {this.handleUrlClick('albumUrl')}}
-                         className = "album-cover"
-                         alt = "album cover"/>
-                    <img src = {logo} 
-                         onClick = {() => {this.handleUrlClick('spotifyUrl')}}
-                         className = "url-logo" 
-                         alt = "spotify link"/>
-                    <h2 className = "song-details"
+            <li 
+                id = {this.state.id} 
+                className = 'list-item-li' >
+                <div className = "list-item">
+                    <img 
+                        src = {this.state.albumCover} 
+                        onClick = {() => {this.handleUrlClick('albumUrl')}}
+                        className = "album-cover"
+                        alt = "album cover"/>
+                    <h2 
+                        className = "song-details"
                         onClick = {this.handleListItemClicked}>
                         {this.state.artistName + " - " + this.state.songName} 
-                    </h2>
+                    </h2>     
+                    <FaSpotify 
+                        onClick = {() => {this.handleUrlClick('spotifyUrl')}}
+                        className = "url-logo" 
+                        alt = "spotify link"/>
                     <audio src = {this.state.previewUrl}
                            className = "audio-preview" 
                            id = {this.state.previewUrl}      
                            controls/>
-                    <img src = {expandButton}
-                         onClick = {this.handleListItemClicked}
-                         className = 'expand-button'/>
+  
+                    <IoIosArrowDown 
+                        onClick = {this.handleListItemClicked}
+                        className = 'expand-button'/>      
                 </div>
                 <Collapse isOpened = {this.state.isOpened}> 
                     <div className = "collapsible">
