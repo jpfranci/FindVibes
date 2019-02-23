@@ -46,17 +46,16 @@ class RecommendedListItem extends Component {
                 handlePlayClick = {this.onPlayClicked}
                 handleArrowClick = {this.props.addToPlayList}
                 removeFromPlayList = {this.props.removeFromPlayList}
-                spotifyUrl = {listItem.external_urls.spotify}
-                popularity = {listItem.popularity}
+                spotifyUrl = {track.external_urls.spotify}
+                popularity = {track.popularity}
                 isExpandable = {false}
             />
             )
     }
 
     getPlayOrPause(previewUrl) {
-        const listItem = this.props.listItem;   
         const isPlaying = (previewUrl === this.props.currentPlaying && this.props.isCurrentlyPlaying);
-        if (!listItem.preview_url) {
+        if (!previewUrl) {
             return (<FaVolumeSlash 
                 className = "list-item-child audio-preview" 
                 id = {this.state.previewUrl}/>)

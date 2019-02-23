@@ -1,18 +1,64 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
+
+body {
+  background-color: #1f2127;
+  height: 100vh;
+}
+
 .App {
   text-align: center;
-  background-color: #1f2127;
-  min-height: 100vh;
+  height: 100vh;
+  color: #4dcc62;
   min-width: 100vh;
   background-repeat: repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .audio-player {
+  display: none;
+}
+
+.slider {
+  margin-bottom: 3vh;
+}
+
+.slider-container {
+  width: 100%;
+  position: relative;
+  margin-top: -4vh; 
+}
+
+.slider-label {
+  color: white;
+  margin-bottom: -0.5vh;
+  font-size: calc(10px + 1.2vh);
+}
+
+.submit-button {
+  width: 60vh;
+  padding: 1vh;
+  margin-top: 5vh;
+  margin-left: 10vh;
+  background: #4dcc62;
+  color: black;
+  border-radius: 5vh;
+}
+
+
+.options-header {
+  font-size: calc(10px + 1.5vh);
+  font-weight: 600;
+}
+
+.options-container {
+  margin: 1vh;
+  background-color: #39403a;
+  border-radius: 2vh;
+  width: 80vh;
 }
 
 .opening-screen {
@@ -20,8 +66,16 @@
   justify-content: space-around;
   align-content: space-around;
   width: 60vh;
+  max-height: 50vh;
   flex-direction: column;
-  margin-right: 4vh;
+}
+
+.time-range-container {
+  display: flex;
+  width: 80vh;
+  justify-content: space-around;
+  align-content: space-around;
+  flex-direction: row;
 }
 
 .logo {
@@ -36,7 +90,6 @@
   font-size: calc(10px + 3vmin);
   color: #4dcc62;
   position: relative;
-  left: -1%;
   margin-top: -14vh;
   margin-bottom: 20vh;
 }
@@ -53,7 +106,7 @@
   align-items: center;
   justify-content: space-around;
   align-content: space-around;
-  max-width: 90vh;
+  max-width: 110vh;
 }
 
 .progress {
@@ -83,7 +136,6 @@
   box-shadow: 1px 5px 5px -5px rgba(0, 0, 24, 0.5);
   transform: scale(1.03);
 }   
-
 
 .song-details{
   width: 45vh;
@@ -128,6 +180,11 @@
   height: 5vh;
 }
 
+.expandable:hover {
+  box-shadow: 1px 5px 5px -5px rgba(0, 0, 24, 0.5);
+  transform: scale(1.1);
+}
+
 .list-item-li:nth-child(odd){
   background-color: #c8d1c8;
   color:  #41503e;
@@ -139,17 +196,36 @@
 }
 
 .App-link {
-  color: black;
+  color: #070707;
   font-size: calc(10px + 2vmin);
   font-family: 'Open Sans';
   background: #4dcc62;
+  font-weight: 600;
   margin: 2vh;
-  font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 3vh;
+  border-radius: 5vh;
   padding: 2vh;
+}
+
+.login {
+  margin-top: 25vh;
+}
+
+
+.options-button {
+  font-size: calc(10px + 1vmin);
+  width: 30vh;
+}
+
+.options-button:hover {
+  box-shadow: 1px 5px 5px -5px rgba(0, 0, 24, 0.5);
+  transform: scale(1.1);
+}
+
+.selected {
+  background: #347664;
 }
 
 .url-logo {

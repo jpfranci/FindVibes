@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import LoginPage from "./login-page.js";
-import RecommendedList from "./recommended-list.js";
+import LoginPage from "./components/login-page.js";
+import RecommendedList from "./components/recommended-list.js";
+import OptionsPage from './components/options.js';
 
 class App extends Component {
   /*
@@ -15,8 +16,11 @@ class App extends Component {
     this.state = {
       isLoggedIn: access_token ? true : false,
       access_token: access_token ? access_token : null,
+      options: null,
       refresh_token: refresh_token ? refresh_token : null
     };
+
+    this.onOptionsChange.bind(this);
   }
 
    /**
@@ -33,16 +37,31 @@ class App extends Component {
     return hashParams;
   }
 
+  onOptionsChange(options) {
+    this.setState({
+      options: options
+    })
+  }
+
   /*
   * Renders the user's recommended songs if successfully logged in else displays a login page
   */
   render() {
-    let page = this.state.isLoggedIn ? 
-    <RecommendedList access_token = {this.state.access_token}
-                     refresh_token = {this.state.refresh_token}/>
-    : <LoginPage/>;
-    console.log(this.state);
+    let page;
 
+    if(!this.state.isLoggedIn) {
+      page = <LoginPage/>
+    } else if (!this.state.options) {
+      page = <OptionsPage onOptionsChange = {this.onOptionsChange}/>
+    } else {
+      page = 
+      <RecommendedList
+       access_token = {this.state.access_token}
+       refresh_token = {this.state.refresh_token}
+       options =  {this.state.options}  
+       />
+    }
+    
     return (
       <div>
         {page}

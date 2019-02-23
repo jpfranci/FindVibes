@@ -4,6 +4,7 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import uuid from 'uuid';
 import { ClimbingBoxLoader } from 'react-spinners';
 import RecommendedListItem from './recommended-list-item';
+import { error } from 'util';
 
 const spotifyApi = new SpotifyWebApi();
 class RecommendedList extends Component {
@@ -29,6 +30,7 @@ class RecommendedList extends Component {
         this.onPlayClickedAudio = this.onPlayClickedAudio.bind(this);
         this.addToPlayList = this.addToPlayList.bind(this);
         this.removeFromPlayList = this.removeFromPlayList.bind(this);
+        this.onAudioClipStopped = this.onAudioClipStopped.bind(this);
         this.getRecommended();
     }
 
@@ -66,7 +68,10 @@ class RecommendedList extends Component {
                     window.location.href = 'http://localhost:8888/login'
                 }
             } else 
-                console.log(error);       
+                console.log(error);
+                await this.setState({
+                    error: error.status + ' while getting recommended songs'
+                })
         }
     }
 
@@ -106,7 +111,10 @@ class RecommendedList extends Component {
             })
             console.log(this.state);
         } catch(error) {
-            console.log(error);     
+            console.log(error);
+            await this.setState({
+                error: error.status + ' while creating recommended playlist'
+            })  
         }
     }
 
@@ -122,6 +130,9 @@ class RecommendedList extends Component {
             callback();
         } catch (error) {
             console.log(error);
+            await this.setState({
+                error: error.status + ' while adding to playlist'
+            })       
         }
     }
 
@@ -137,6 +148,9 @@ class RecommendedList extends Component {
             callback();
         } catch (error) {
             console.log(error);
+            await this.setState({
+                error: error.status
+            })
         }
     }
 
@@ -153,6 +167,9 @@ class RecommendedList extends Component {
             return track;
         } catch (error) {
             console.log(error);
+            await this.setState({
+                error: error.status + ' while rendering top tracks'
+            })   
             return track;
         }
     }
@@ -192,6 +209,15 @@ class RecommendedList extends Component {
         } 
     }
 
+     /* Fires when this audio player stops and sets state to not playing if valid audio_url */
+    onAudioClipStopped() {
+        if (this.state.isPlaying) {
+            this.setState({
+                isPlaying: false
+            })
+        }
+    }
+
     /*
     * Renders a RecommendedListItem with prop.listItem set to listItem
     * @param {Object}, listItem a recommendedListItem consisting of a song, producing artist's top songs,
@@ -211,6 +237,15 @@ class RecommendedList extends Component {
    }
 
     render() {
+        let errorMessage;
+        if (this.state.error) {
+            errorMessage = 
+                <div>
+                    <h2 className>{'Please try again later'}</h2>
+                    <h2 >{'Something went wrong. Error Code: ' + this.state.error}</h2>
+                </div>
+        }
+        
         if (this.state.isLoaded) {
             let listItems = this.state.recommendedList.map(this.renderItem);
             return(
@@ -219,9 +254,11 @@ class RecommendedList extends Component {
                     <header className="App-header list"> 
                         <h2>Song Recommendations</h2> 
                     </header>
+                    {errorMessage}
                     <audio 
                         className = "audio-player" 
                         id = {'audio-player'} 
+                        onEnded = {this.onAudioClipStopped}
                         controls>
                         <source id = {'audio-player-source'} src = {this.state.preview_url}></source>
                     </audio>
@@ -231,6 +268,11 @@ class RecommendedList extends Component {
                 </div>
             )
         } else {
+            let loadingMessage =  
+                <h2 className = 'loading-label'>Making your recommended playlist</h2>;
+            if (errorMessage) {
+                loadingMessage = errorMessage
+            }
             return(
                 <div className = "App">
                     <img className = "logo" src={logo} alt = {'problem here'}></img>
@@ -243,8 +285,7 @@ class RecommendedList extends Component {
                         size = {3}
                         loading = {true}
                     />   
-                    <h2 className = 'loading-label'>Making your recommended playlist</h2>
-                    {this.state.error}
+                    {loadingMessage}
                 </div>        
             )
         }
