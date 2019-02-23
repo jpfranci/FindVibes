@@ -4,6 +4,7 @@ import uuid from 'uuid';
 import { ClimbingBoxLoader } from 'react-spinners';
 import RecommendedListItem from './recommended-list-item';
 import AppContainer from './app-container';
+import SelectButton from './select-button';
 
 const spotifyApi = new SpotifyWebApi();
 const maxSeeds = 5;
@@ -177,28 +178,35 @@ class RecommendedList extends Component {
     * representing a user's recommended tracks
     */
     async createPlaylist(recommendedTracks) {
-        const recommendedListSongs = await recommendedTracks.map(song => 'spotify:track:' + song.id);
-        const userId = await spotifyApi.getMe();
+        if (recommendedTracks.length > 0) {
+            const recommendedListSongs = await recommendedTracks.map(song => 'spotify:track:' + song.id);
+            const userId = await spotifyApi.getMe();
 
-        const recommendedPlaylist = await spotifyApi.createPlaylist(userId.id, 
-            {name: "Recommended Playlist " + uuid.v1(), 
-            description: "made from spotify song recommender", public: false});
-        await spotifyApi.addTracksToPlaylist
-            (recommendedPlaylist.id, recommendedListSongs);       
-        await this.setState({
-            playListId: recommendedPlaylist.id,
-            country: userId.country,
-        });
+            const recommendedPlaylist = await spotifyApi.createPlaylist(userId.id, 
+                {name: "Recommended Playlist " + uuid.v1(), 
+                description: "made from spotify song recommender", public: false});
+        
+            await spotifyApi.addTracksToPlaylist
+                (recommendedPlaylist.id, recommendedListSongs);       
+            await this.setState({
+                playListId: recommendedPlaylist.id,
+                country: userId.country,
+            });
 
-        let recommendedTracksWithArtistTop = await recommendedTracks.map
-            ((track) => this.addTopTracks(track, this.state.country));
-        // used to resolve promise array returned by mapping each track to a promise in async call
-        recommendedTracksWithArtistTop = await Promise.all(recommendedTracksWithArtistTop);
+            let recommendedTracksWithArtistTop = await recommendedTracks.map
+                ((track) => this.addTopTracks(track, this.state.country));
+            // used to resolve promise array returned by mapping each track to a promise in async call
+            recommendedTracksWithArtistTop = await Promise.all(recommendedTracksWithArtistTop);
 
-        await this.setState({
-            recommendedList: recommendedTracksWithArtistTop,
-            isLoaded: true
-        })
+            await this.setState({
+                recommendedList: recommendedTracksWithArtistTop,
+                isLoaded: true
+            })
+        } else {
+            this.setState({
+                error: ' Must have Spotify history to use this website'
+            })
+        }
         console.log(this.state); 
     }
 
@@ -325,8 +333,8 @@ class RecommendedList extends Component {
         if (this.state.error) {
             errorMessage = 
                 <div>
-                    <h2 className>{'Please try again later'}</h2>
-                    <h2 >{'Something went wrong. Error Code: ' + this.state.error}</h2>
+                    <h2 className = 'error-header'>{'Something went wrong'}</h2>
+                    <h2 className = 'error-body'>{'Error:' + this.state.error}</h2>
                 </div>
         }
         
@@ -345,6 +353,15 @@ class RecommendedList extends Component {
                                 controls>
                                 <source id = {'audio-player-source'} src = {this.state.preview_url}></source>
                             </audio>
+                            <a 
+                                href = {'https://open.spotify.com/playlist/' + this.state.playListId}
+                                target = '_blank'
+                                rel="noopener noreferrer">
+                                <SelectButton 
+                                    text = 'Playlist Link'
+                                    className = "App-link recommend-button expandable"
+                                />
+                            </a>
                             <ol>
                                 {listItems}
                             </ol>

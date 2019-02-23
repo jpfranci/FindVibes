@@ -39,7 +39,7 @@ class RecommendedListItem extends Component {
                     albumName = {track.album.name}
                     albumUrl = {track.album.external_urls.spotify}
                     artistName = {track.artists[0].name}
-                    albumCover = {listItem.album.images[2] ? listItem.album.images[2].url : null}
+                    albumCover = {track.album.images[2] ? track.album.images[2].url : null}
                     previewUrl = {track.preview_url}
                     songName = {track.name}
                     id = {track.id}
@@ -60,17 +60,17 @@ class RecommendedListItem extends Component {
         const isPlaying = (previewUrl === this.props.currentPlaying && this.props.isCurrentlyPlaying);
         if (!previewUrl) {
             return (<FaVolumeSlash 
-                className = "list-item-child audio-preview" 
+                className = "list-item-child audio-preview expandable clickable" 
                 id = {this.state.previewUrl}/>)
         } else {
             return isPlaying ? 
                 <MdPauseCircleFilled
-                    className = "list-item-child audio-preview" 
+                    className = "list-item-child audio-preview expandable clickable" 
                     id = {this.state.previewUrl}
                 />
                 : 
                 <IoIosPlayCircle 
-                    className = "list-item-child audio-preview" 
+                    className = "list-item-child audio-preview expandable clickable" 
                     id = {this.state.previewUrl}
                 />     
         }

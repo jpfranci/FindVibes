@@ -30,17 +30,17 @@ class SongInfo extends Component {
             addIconOrExpandable = 
                 <IoIosArrowDown 
                     onClick = {this.props.handleArrowClick}
-                    className = 'list-item-child expand-button'
+                    className = 'list-item-child expand-button clickable'
                 />
         } else if (this.state.isAddedToPlayList) {
             addIconOrExpandable = <FaCheck 
-                className = 'list-item-child expand-button'
+                className = 'list-item-child expand-button expandable clickable'
                 onClick = {() => {this.props.removeFromPlayList(this.props.id, this.addedToPlaylist)}}
             />
         } else {
             addIconOrExpandable = <FaPlus
                 onClick = {() => {this.props.handleArrowClick(this.props.id, this.addedToPlaylist)}}
-                className = 'list-item-child expand-button'
+                className = 'list-item-child expand-button expandable clickable'
             />;
         }
 
@@ -49,16 +49,16 @@ class SongInfo extends Component {
                 <img 
                     src = {this.props.albumCover} 
                     onClick = {() => {this.handleUrlClick(this.props.albumUrl)}}
-                    className = "list-item-child album-cover"
+                    className = "album-cover expandable clickable"
                     alt = "album cover"/>
                 <h2 
-                    className = "list-item-child song-details"
+                    className = "song-details"
                     onClick = {this.props.handleArrowClick}>
                     {this.props.artistName + " - " + this.props.songName} 
                 </h2>     
                 <FaSpotify 
                     onClick = {() => {this.handleUrlClick(this.props.spotifyUrl)}}
-                    className = "list-item-child url-logo" 
+                    className = "url-logo expandable clickable" 
                     alt = "spotify link"/>
                 <div onClick = {() => {this.props.handlePlayClick(this.props.previewUrl)}}>
                     {this.props.playInfo}
