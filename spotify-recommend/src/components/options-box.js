@@ -7,7 +7,7 @@ class OptionsBox extends Component {
 
     render() {
         return (
-            <div className = 'options-container'>
+            <div key = {this.props.header} className = 'options-container'>
                 <p className = 'options-header'>{this.props.header}</p>
                 <div className = 'time-range-container'>
                     {this.props.content}

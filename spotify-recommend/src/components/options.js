@@ -1,30 +1,31 @@
 import React, { Component } from 'react';
-import Slider, { Range } from 'rc-slider';
-import OptionsBox from './options-box.js';
-import './login-page.css';
-import SelectButton from './select-button.js';
+import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import OptionsBox from './options-box.js';
+import SelectButton from './select-button.js';
 import AppContainer from './app-container.js';
 
 const timeRangeArray = [
-    {name: 'shortTerm', text: 'The last 4 weeks'}, 
-    {name: 'mediumTerm', text: 'The last 6 months'},
-    {name: 'longTerm', text: 'All of your spotify history'}
+    {name: 'short_term', text: 'The last 4 weeks'}, 
+    {name: 'medium_term', text: 'The last 6 months'},
+    {name: 'long_term', text: 'All of your spotify history'}
 ];
 const recommendationsMethodArray = [
     {name: 'onlyTrack', text: 'Only your top songs'}, 
-    {name: 'split', text: 'Your top songs and artsts'},
+    {name: 'split', text: 'Your top songs and artists'},
     {name: 'onlyArtist', text: 'Only your top artists'}
-];class OptionsPage extends Component {
+];
+
+class OptionsPage extends Component {
     constructor(props) {
         super(props);
 
-        // timeRange is either 'shortTerm', 'mediumTerm', or 'longTerm'
-        // playListLength is [1, 100]
+        // timeRange is either 'short_term', 'medium_term', or 'long_term'
+        // playListLength is [20, 100]
         // recommendationsMethod is either 'onlyTrack', 'split', or 'onlyArtist'
         // useTopTracks is [1, 20]
         this.state = {
-            timeRange: 'mediumTerm',
+            timeRange: 'medium_term',
             playListLength: 50, 
             recommendationsMethod: 'split',
             useTopTracks: 10  
@@ -73,12 +74,12 @@ const recommendationsMethodArray = [
         />;
     }
 
-    renderSlider(onChange, max, value) {
+    renderSlider(onChange, min, max, value) {
         return <div className = 'slider-container'>
                     <p className = 'slider-label'>{value + ' songs'}</p>
                     <Slider
                         className = 'slider'
-                        min = {1}
+                        min = {min}
                         step = {1}
                         onChange = {onChange}
                         max = {max}
@@ -88,17 +89,17 @@ const recommendationsMethodArray = [
     }
 
     render() {
-        let timeRangeBox = timeRangeArray.map((timeRange) => {
+        const timeRangeBox = timeRangeArray.map((timeRange) => {
             return this.renderButton(this.onTimeRangeButtonClick, this.state.timeRange, timeRange)
         });
-        let recommendationsBox = recommendationsMethodArray.map((recommendation) => {
+        const recommendationsBox = recommendationsMethodArray.map((recommendation) => {
             return this.renderButton(this.onRecommendationsMethodButtonClick, 
                 this.state.recommendationsMethod, 
                 recommendation)
         })
-        let playlistSlider = this.renderSlider(this.onPlayListLengthChange, 
+        const playlistSlider = this.renderSlider(this.onPlayListLengthChange, 20,
             100, this.state.playListLength);
-        let songNumberSlider = this.renderSlider(this.onTopTrackLengthChange, 20, this.state.useTopTracks);
+        const songNumberSlider = this.renderSlider(this.onTopTrackLengthChange, 1, 20, this.state.useTopTracks);
 
         return(
             <AppContainer
@@ -121,7 +122,11 @@ const recommendationsMethodArray = [
                             content = {songNumberSlider}
                         />
                         <div className = 'submit-button expandable'>
-                            <p className = 'options-header'>Create your personalized playlist!</p>
+                            <p 
+                                className = 'options-header'
+                                onClick = {() => {this.props.onOptionsChange(this.state)}}
+                            >
+                                Create your personalized playlist!</p>
                         </div>
                     </div>
                 }

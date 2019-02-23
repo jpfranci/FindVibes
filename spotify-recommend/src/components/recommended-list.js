@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import logo from './spotify-logo.png';
 import SpotifyWebApi from 'spotify-web-api-js';
 import uuid from 'uuid';
 import { ClimbingBoxLoader } from 'react-spinners';
 import RecommendedListItem from './recommended-list-item';
-import { error } from 'util';
+import AppContainer from './app-container';
 
 const spotifyApi = new SpotifyWebApi();
+const maxSeeds = 5;
 class RecommendedList extends Component {
     /*
     * Constructs this recommendedList and creates a playlist from user's top tracks and artists
@@ -31,91 +31,175 @@ class RecommendedList extends Component {
         this.addToPlayList = this.addToPlayList.bind(this);
         this.removeFromPlayList = this.removeFromPlayList.bind(this);
         this.onAudioClipStopped = this.onAudioClipStopped.bind(this);
-        this.getRecommended();
-    }
-
-    /*
-    * Gets recommended songs from user's top tracks and top artists in the past 6 months, and sets
-    * this.state accordingly. Creates a playlist from recommended songs
-    */
-    async getRecommended() {
-        try {
-        spotifyApi.setAccessToken(this.state.access_token);
-
-        // Spotify API has a limit of 5 seeds per recommendation request
-        const topSongs = await spotifyApi.getMyTopTracks({limit: 5, offset: 0, time_range: 'medium_term'});
-        let topSongsArray = await topSongs.items.map(song => song.id);
-
-        const topArtists = await spotifyApi.getMyTopArtists({limit: 5, offset: 0, time_range: 'medium_term'});
-        let topArtistsArray = await topArtists.items.map(artist => artist.id);
- 
-        let recommendedFromSongs = await spotifyApi.getRecommendations({limit: 35, 
-          seed_artists: topArtistsArray});
-        let recommendedFromArtists = await spotifyApi.getRecommendations({limit: 15, 
-            seed_tracks: topSongsArray});
+        this.getUsersTopIds = this.getUsersTopIds.bind(this);
+        this.getRecommendedTracksAndCreatePlaylist = this.getRecommendedTracksAndCreatePlaylist.bind(this);
         
-        recommendedFromSongs = recommendedFromSongs.tracks.concat(recommendedFromArtists.tracks);
-        await this.setState({
-            recommendedList: recommendedFromSongs
-        });
-
-        await this.createPlaylist();
-        } catch (error) {
-            if (error.status) {
-                // error code 401 occurs when the access token has expired
-                if (error.status === 401) {
-                    // get renewed access token
-                    window.location.href = 'http://localhost:8888/login'
-                }
-            } else 
-                console.log(error);
-                await this.setState({
-                    error: error.status + ' while getting recommended songs'
-                })
-        }
+        this.getRecommendedTracksAndCreatePlaylist();
     }
 
     /*
-    * Creates playlist based on list of recommended songs in this.state
-    * @param {SpotifyWebApi}, a SpotifyWebApi with access_code already in it
+    * Gets the top ids for a given seed from user options, which can be either only artists, 
+    * split between artists and tracks, and only tracks and at a user selected time range
+    * @returns {Object}, an object with key-value pairing representing seedType and Spotify Ids of the
+    * top user preferences in that seedType
     */
-    async createPlaylist() {
-        try {
-            const recommendedListSongs = await this.state.recommendedList.map(song => 'spotify:track:' + song.id);
-            const userId = await spotifyApi.getMe();
-  
-            const recommendedPlaylist = await spotifyApi.createPlaylist(userId.id, 
-                {name: "Recommended Playlist " + uuid.v1(), 
-                description: "made from spotify song recommender", public: false});
-            await spotifyApi.addTracksToPlaylist
-                (recommendedPlaylist.id, recommendedListSongs);       
-            await this.setState({
-                playListId: recommendedPlaylist.id,
-                country: userId.country,
+    async getUsersTopIds() {  
+        let userTopIds;  
+        let topArtists;
+        let topTracks;
+        
+        if (this.props.options.recommendationsMethod === 'onlyArtist') {
+            topArtists = await spotifyApi.getMyTopArtists({
+                limit: this.props.options.useTopTracks, 
+                time_range: this.props.options.timeRange
+            });
+            userTopIds = {seed_artists: await topArtists.items.map(artist => artist.id)};
+        } 
+        
+        else if (this.props.options.recommendationsMethod === 'split') {
+            const topTracksLen = Math.ceil(this.props.options.useTopTracks / 2);
+            const topArtistsLen = this.props.options.useTopTracks - topTracksLen;
+
+            topTracks = await spotifyApi.getMyTopTracks({
+                limit: topTracksLen,
+                time_range: this.props.options.timeRange
             });
 
-            /*
-            let playListWindow = window.open(recommendedPlaylist.external_urls.spotify);
-            playListWindow.blur();
-            window.focus();
-            */
+            userTopIds = {seed_tracks: await topTracks.items.map(song => song.id)};
+            if (topArtistsLen > 0) {
+                topArtists = await spotifyApi.getMyTopArtists({
+                    limit: topArtistsLen,
+                    time_range: this.props.options.timeRange
+                });
+                userTopIds = {
+                    ...userTopIds, 
+                    ...{seed_artists: await topArtists.items.map(artist => artist.id)}};
+            }
+        } 
+        
+        else {
+            topTracks = await spotifyApi.getMyTopTracks({
+                limit: this.props.options.useTopTracks,
+                time_range: this.props.options.timeRange
+            });
+            userTopIds = {seed_tracks: await topTracks.items.map(track => track.id)};
+        } 
 
-            let addedTopTracks = await this.state.recommendedList.map
-                ((track) => this.addTopTracks(track, this.state.country));
-            // used to resolve promise array returned by mapping each track to a promise in async call
-            addedTopTracks = await Promise.all(addedTopTracks);
+        return userTopIds;
+    }
 
-            await this.setState({
-                recommendedList: addedTopTracks,
-                isLoaded: true
-            })
-            console.log(this.state);
-        } catch(error) {
+    /*
+    * Uses user options to get their recommended tracks with properties in a given time range,
+    * how large the playlist will be, how many seeds to use, and what kind of seeds and creates a 
+    * Spotify playlist from recommended tracks
+    */
+    async getRecommendedTracksAndCreatePlaylist() {
+        try {
+            await spotifyApi.setAccessToken(this.state.access_token);
+            let usersTopIds = await this.getUsersTopIds();
+            let recommendedTracks = [];
+
+            if (usersTopIds.seed_artists && usersTopIds.seed_artists.length > 0) {
+                const recommendedTracksFromCall = await this.getRecommendedTracks(
+                    usersTopIds.seed_artists, 'seed_artists');
+                recommendedTracks = recommendedTracks.concat(recommendedTracksFromCall);
+            }
+
+            if (usersTopIds.seed_tracks && usersTopIds.seed_tracks.length > 0) {
+                const recommendedTracksFromCall = await this.getRecommendedTracks(
+                    usersTopIds.seed_tracks, 'seed_tracks');
+                recommendedTracks = recommendedTracks.concat(recommendedTracksFromCall);
+            }
+
+            await this.createPlaylist(recommendedTracks);
+        } catch (error) {
             console.log(error);
             await this.setState({
-                error: error.status + ' while creating recommended playlist'
-            })  
+                error: error.status + ' while getting recommended songs'
+            })
         }
+    }
+
+    /*
+    * Returns the user's recommended Spotify tracks based on user's seedOption and using userTopIds as seeds 
+    * @param {number[]} userTopIds, an array of Spotify Ids representing user's tops in the seedOption
+    * @param {string} seedOption, a String refering to either "seed_tracks" or "seed_artists"
+    * @returns {SpotifyTrackObject[]} recommended tracks for this user
+    */
+    async getRecommendedTracks(userTopIds, seedOption) {
+        if (userTopIds.length < maxSeeds) {
+            const recommendedTracks = await spotifyApi.getRecommendations({
+                limit: numTracksToCreate,
+                [seedOption]: userTopIds
+            })
+            return recommendedTracks.tracks;
+        }
+
+        let seedsRemaining = userTopIds.length;
+        let recommendedTracks = [];
+        let numTracksToCreate = this.props.options.playListLength;
+    
+        if (this.props.options.recommendationsMethod === 'split') {
+            if (seedOption === 'seed_tracks') {
+                numTracksToCreate = Math.ceil(this.props.options.playListLength/2);
+            } else if (seedOption === 'seed_artists') {
+                numTracksToCreate = Math.floor(this.props.options.playListLength/2);
+            }
+        }
+
+        let numTracksRemaining = numTracksToCreate;
+        for (let i = 0; seedsRemaining > 0 && numTracksRemaining > 0; i++) {
+            let seedsToUse, numTracksPortion;
+            
+            if (seedsRemaining >= maxSeeds) {
+                numTracksPortion = Math.round(numTracksToCreate / Math.floor(userTopIds.length / maxSeeds));
+                seedsToUse = maxSeeds;
+            } else {
+                numTracksPortion = numTracksRemaining;
+                seedsToUse = seedsRemaining;
+            }
+
+            const userTopIdsPortion = userTopIds.slice(i * seedsToUse, (i + 1) * seedsToUse - 1);
+            const recommendedTracksPortion = await spotifyApi.getRecommendations({
+                limit: numTracksPortion,
+                [seedOption]: userTopIdsPortion 
+            })
+            recommendedTracks = recommendedTracks.concat(recommendedTracksPortion.tracks);
+            seedsRemaining -= maxSeeds;
+            numTracksRemaining -= numTracksPortion;
+        }
+        return recommendedTracks;
+    }
+
+    /*
+    * Creates a Spotify playlist based on recommendedTracks and also with an artist's top tracks
+    * @param {SpotifyTrackObject[]} recommendedTracks, an array of Spotify tracks objects 
+    * representing a user's recommended tracks
+    */
+    async createPlaylist(recommendedTracks) {
+        const recommendedListSongs = await recommendedTracks.map(song => 'spotify:track:' + song.id);
+        const userId = await spotifyApi.getMe();
+
+        const recommendedPlaylist = await spotifyApi.createPlaylist(userId.id, 
+            {name: "Recommended Playlist " + uuid.v1(), 
+            description: "made from spotify song recommender", public: false});
+        await spotifyApi.addTracksToPlaylist
+            (recommendedPlaylist.id, recommendedListSongs);       
+        await this.setState({
+            playListId: recommendedPlaylist.id,
+            country: userId.country,
+        });
+
+        let recommendedTracksWithArtistTop = await recommendedTracks.map
+            ((track) => this.addTopTracks(track, this.state.country));
+        // used to resolve promise array returned by mapping each track to a promise in async call
+        recommendedTracksWithArtistTop = await Promise.all(recommendedTracksWithArtistTop);
+
+        await this.setState({
+            recommendedList: recommendedTracksWithArtistTop,
+            isLoaded: true
+        })
+        console.log(this.state); 
     }
 
     /*
@@ -249,23 +333,24 @@ class RecommendedList extends Component {
         if (this.state.isLoaded) {
             let listItems = this.state.recommendedList.map(this.renderItem);
             return(
-                <div className = "App">
-                    <img className = "logo" src={logo} alt = {'problem here'}></img>
-                    <header className="App-header list"> 
-                        <h2>Song Recommendations</h2> 
-                    </header>
-                    {errorMessage}
-                    <audio 
-                        className = "audio-player" 
-                        id = {'audio-player'} 
-                        onEnded = {this.onAudioClipStopped}
-                        controls>
-                        <source id = {'audio-player-source'} src = {this.state.preview_url}></source>
-                    </audio>
-                    <ol>
-                        {listItems}
-                    </ol>
-                </div>
+                <AppContainer 
+                    header = 'Song Recommendations'
+                    content = {
+                        <div>
+                            {errorMessage}
+                            <audio 
+                                className = "audio-player" 
+                                id = {'audio-player'} 
+                                onEnded = {this.onAudioClipStopped}
+                                controls>
+                                <source id = {'audio-player-source'} src = {this.state.preview_url}></source>
+                            </audio>
+                            <ol>
+                                {listItems}
+                            </ol>
+                        </div>
+                    }
+                />                   
             )
         } else {
             let loadingMessage =  
@@ -274,19 +359,20 @@ class RecommendedList extends Component {
                 loadingMessage = errorMessage
             }
             return(
-                <div className = "App">
-                    <img className = "logo" src={logo} alt = {'problem here'}></img>
-                    <header className="App-header"> 
-                        <h2>Song Recommender</h2> 
-                    </header>
-                    <ClimbingBoxLoader 
-                        color={'#4dcc62'}
-                        sizeUnit = {'vh'}
-                        size = {3}
-                        loading = {true}
-                    />   
-                    {loadingMessage}
-                </div>        
+                <AppContainer 
+                    header = "Song Recommendations"
+                    content = {
+                        <div className = 'loading-container'>
+                            <ClimbingBoxLoader 
+                                color={'#4dcc62'}
+                                sizeUnit = {'vh'}
+                                size = {3}
+                                loading = {true}
+                            />
+                            {loadingMessage}
+                        </div>
+                    }
+                />      
             )
         }
     }

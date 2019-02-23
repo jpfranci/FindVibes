@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './login-page.css';
 import AppContainer from './app-container';
 
 class LoginPage extends Component {

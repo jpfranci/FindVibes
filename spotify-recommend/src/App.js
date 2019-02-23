@@ -20,7 +20,7 @@ class App extends Component {
       refresh_token: refresh_token ? refresh_token : null
     };
 
-    this.onOptionsChange.bind(this);
+    this.onOptionsChange = this.onOptionsChange.bind(this);
   }
 
    /**
@@ -50,16 +50,16 @@ class App extends Component {
     let page;
 
     if(!this.state.isLoggedIn) {
-      page = <LoginPage/>
+        page = <LoginPage/>
     } else if (!this.state.options) {
-      page = <OptionsPage onOptionsChange = {this.onOptionsChange}/>
+        page = <OptionsPage onOptionsChange = {this.onOptionsChange}/>
     } else {
-      page = 
-      <RecommendedList
-       access_token = {this.state.access_token}
-       refresh_token = {this.state.refresh_token}
-       options =  {this.state.options}  
-       />
+        page = 
+          <RecommendedList
+            access_token = {this.state.access_token}
+            refresh_token = {this.state.refresh_token}
+            options =  {this.state.options}  
+          />
     }
     
     return (
