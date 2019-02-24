@@ -5,19 +5,17 @@ import OptionsPage from './components/options.js';
 
 class App extends Component {
   /*
-  * Sets state based if this window url has access_token and refresh_token
+  * Sets state based if this window url has access_token
   */
   constructor(props) {
     super(props);
     const windowParams = this.getHashParams();
     const access_token = windowParams.access_token;
-    const refresh_token = windowParams.refresh_token;
 
     this.state = {
       isLoggedIn: access_token ? true : false,
       access_token: access_token ? access_token : null,
       options: null,
-      refresh_token: refresh_token ? refresh_token : null
     };
 
     this.onOptionsChange = this.onOptionsChange.bind(this);
@@ -57,7 +55,6 @@ class App extends Component {
         page = 
           <RecommendedList
             access_token = {this.state.access_token}
-            refresh_token = {this.state.refresh_token}
             options =  {this.state.options}  
           />
     }

@@ -30,11 +30,11 @@ class SongInfo extends Component {
             addIconOrExpandable = 
                 <IoIosArrowDown 
                     onClick = {this.props.handleArrowClick}
-                    className = 'list-item-child expand-button clickable'
+                    className = 'expand-button clickable'
                 />
         } else if (this.state.isAddedToPlayList) {
             addIconOrExpandable = <FaCheck 
-                className = 'list-item-child expand-button expandable clickable'
+                className = 'expand-button expandable clickable'
                 onClick = {() => {this.props.removeFromPlayList(this.props.id, this.addedToPlaylist)}}
             />
         } else {

@@ -65,9 +65,10 @@ class OptionsPage extends Component {
 
     renderButton(onClick, activeCondition, buttonId) {
         return <SelectButton
-            className = {"App-link options-button expandable"}
+            key = {buttonId.name}
+            className = {"App-link options-button expandable clickable"}
             onClick = {onClick}
-            activeClassName = {"App-link options-button expandable" + " selected"}
+            activeClassName = {"App-link options-button expandable clickable selected"}
             text = {buttonId.text}
             active = {activeCondition === buttonId.name}
             id = { buttonId.name }
@@ -104,13 +105,14 @@ class OptionsPage extends Component {
         return(
             <AppContainer
                 header = 'Song Recommendations Options'
-                content = {<div>
+                content = {
+                    <div>
                         <OptionsBox
                             header = {'Pick your time range for recommendations'}
                             content = {timeRangeBox}
                         />
                         <OptionsBox
-                            header = {'Pick your recommendation playlist length'}
+                            header = {'Pick your playlist length for your recommendations'}
                             content = {playlistSlider}
                         />
                         <OptionsBox
@@ -118,10 +120,10 @@ class OptionsPage extends Component {
                             content = {recommendationsBox}
                         />
                         <OptionsBox
-                            header = {'Pick how many top songs or artists to use'}
+                            header = {'Pick how many top songs or artists to use for your recommendations'}
                             content = {songNumberSlider}
                         />
-                        <div className = 'submit-button expandable'>
+                        <div className = 'submit-button expandable clickable'>
                             <p 
                                 className = 'options-header'
                                 onClick = {() => {this.props.onOptionsChange(this.state)}}

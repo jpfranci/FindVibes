@@ -54,8 +54,7 @@ a {
 .submit-button {
   width: 60vh;
   padding: 1vh;
-  margin-top: 5vh;
-  margin-left: 10vh;
+  margin: 3vh 0vh 2vh 10vh;
   background: #4dcc62;
   color: black;
   border-radius: 5vh;
@@ -84,10 +83,10 @@ a {
 
 .opening-screen {
   display: flex;
-  justify-content: space-around;
-  align-content: space-around;
+  justify-content: center;
+  align-content: center;
   width: 60vh;
-  max-height: 50vh;
+  max-height: 80vh;
   flex-direction: column;
 }
 
@@ -115,6 +114,21 @@ a {
   margin-bottom: 20vh;
 }
 
+.collapse-container {
+  display: flex;
+  flex-direction: column;
+  color: black;
+  background: #4dcc62;
+  font-weight: 600;
+  margin: 2vh;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5vh;
+  font-size: 2vmin;
+  align-content: space-around;
+  min-width: 80vh;
+}
+
 .App-header.list {
   margin-bottom: -2vh;
 }
@@ -127,8 +141,9 @@ a {
   align-items: center;
   justify-content: space-around;
   align-content: space-around;
-  max-width: 110vh;
+  min-width: 80vh;
 }
+
 
 .progress {
   width: 10vh;
@@ -162,6 +177,7 @@ a {
   width: 45vh;
   padding-right: 2vh;
   padding-left: 2vh;
+  font-size: calc(10px + 1.5vmin);
   font-family: 'Open Sans';
 }
 
@@ -227,11 +243,41 @@ a {
   background: #4dcc62;
   font-weight: 600;
   margin: 2vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   border-radius: 5vh;
   padding: 2vh;
+}
+
+.expanded {
+  width: 80vh;
+  position: relative;
+  left: -23%;
+
+}
+
+.about-content {
+  display: block;
+  flex-direction: column;
+  font-size: calc(10px + 1vmin);
+  align-items: flex-start;
+  text-align: left;
+}
+
+.select-dropdown {
+  width: 40vh;
+  background: green;
+  border-radius: 5;
+}
+
+.top-recommended-page-buttons {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  left: -5%;
+  margin-left: -14vh;
 }
 
 .login {

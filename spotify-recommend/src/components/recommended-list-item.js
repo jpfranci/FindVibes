@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './login-page.css';
 import { Collapse } from 'react-collapse';
 import { FaVolumeSlash } from 'react-icons/fa';
-import { IoIosPlayCircle, IoIosArrowDown } from "react-icons/io";
+import { IoIosPlayCircle } from "react-icons/io";
 import { MdPauseCircleFilled } from "react-icons/md";
 import  SongInfo from './song-info.js';
 
@@ -60,12 +60,12 @@ class RecommendedListItem extends Component {
         const isPlaying = (previewUrl === this.props.currentPlaying && this.props.isCurrentlyPlaying);
         if (!previewUrl) {
             return (<FaVolumeSlash 
-                className = "list-item-child audio-preview expandable clickable" 
+                className = "audio-preview" 
                 id = {this.state.previewUrl}/>)
         } else {
             return isPlaying ? 
                 <MdPauseCircleFilled
-                    className = "list-item-child audio-preview expandable clickable" 
+                    className = "audio-preview expandable clickable" 
                     id = {this.state.previewUrl}
                 />
                 : 
@@ -85,7 +85,6 @@ class RecommendedListItem extends Component {
         return (
             listItem.name ? 
                 <li 
-                    key = {listItem.id} 
                     className = 'list-item-li'>
                     <SongInfo 
                         albumName = {listItem.album.name}
@@ -107,7 +106,7 @@ class RecommendedListItem extends Component {
                             <h2 className = "collapsible-header">{"Top Tracks by " + listItem.artists[0].name}</h2>
                             {renderTopTracks}
                         </div>
-                    </Collapse>
+                    </Collapse>                
                 </li>
                 : 
                 null

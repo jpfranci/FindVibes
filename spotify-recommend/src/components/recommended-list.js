@@ -5,7 +5,14 @@ import { ClimbingBoxLoader } from 'react-spinners';
 import RecommendedListItem from './recommended-list-item';
 import AppContainer from './app-container';
 import SelectButton from './select-button';
+import Select from 'react-select';
 
+const sortOptions = [
+    {value: 'popularity', label: 'by popularity'},
+    {value: 'name', label: 'by song name'},
+    {value: 'artists[0].name', label: 'by artist name'},
+    {value: 'random', label: 'randomly'}
+];
 const spotifyApi = new SpotifyWebApi();
 const maxSeeds = 5;
 class RecommendedList extends Component {
@@ -18,10 +25,10 @@ class RecommendedList extends Component {
         super(props);
         this.state = {
             access_token: this.props.access_token,
-            refresh_token: this.props.refresh_token,
             recommendedList: [],
             country: null,
             error: null,
+            selectedSortOption: 'null',
             audio_url: "",
             isPlaying: false,
             isLoaded: false,
@@ -96,7 +103,8 @@ class RecommendedList extends Component {
     */
     async getRecommendedTracksAndCreatePlaylist() {
         try {
-            await spotifyApi.setAccessToken(this.state.access_token);
+            await spotifyApi.setAccessToken(this.props.access_token);
+
             let usersTopIds = await this.getUsersTopIds();
             let recommendedTracks = [];
 
@@ -128,6 +136,16 @@ class RecommendedList extends Component {
     * @returns {SpotifyTrackObject[]} recommended tracks for this user
     */
     async getRecommendedTracks(userTopIds, seedOption) {
+        let numTracksToCreate = this.props.options.playListLength;
+    
+        if (this.props.options.recommendationsMethod === 'split') {
+            if (seedOption === 'seed_tracks') {
+                numTracksToCreate = Math.ceil(this.props.options.playListLength/2);
+            } else if (seedOption === 'seed_artists') {
+                numTracksToCreate = Math.floor(this.props.options.playListLength/2);
+            }
+        }
+        
         if (userTopIds.length < maxSeeds) {
             const recommendedTracks = await spotifyApi.getRecommendations({
                 limit: numTracksToCreate,
@@ -138,15 +156,6 @@ class RecommendedList extends Component {
 
         let seedsRemaining = userTopIds.length;
         let recommendedTracks = [];
-        let numTracksToCreate = this.props.options.playListLength;
-    
-        if (this.props.options.recommendationsMethod === 'split') {
-            if (seedOption === 'seed_tracks') {
-                numTracksToCreate = Math.ceil(this.props.options.playListLength/2);
-            } else if (seedOption === 'seed_artists') {
-                numTracksToCreate = Math.floor(this.props.options.playListLength/2);
-            }
-        }
 
         let numTracksRemaining = numTracksToCreate;
         for (let i = 0; seedsRemaining > 0 && numTracksRemaining > 0; i++) {
@@ -202,12 +211,13 @@ class RecommendedList extends Component {
                 recommendedList: recommendedTracksWithArtistTop,
                 isLoaded: true
             })
+
+            console.log(this.state);
         } else {
             this.setState({
                 error: ' Must have Spotify history to use this website'
             })
         }
-        console.log(this.state); 
     }
 
     /*
@@ -353,16 +363,16 @@ class RecommendedList extends Component {
                                 controls>
                                 <source id = {'audio-player-source'} src = {this.state.preview_url}></source>
                             </audio>
-                            <a 
-                                href = {'https://open.spotify.com/playlist/' + this.state.playListId}
-                                target = '_blank'
-                                rel="noopener noreferrer">
-                                <SelectButton 
-                                    text = 'Playlist Link'
-                                    className = "App-link recommend-button expandable"
-                                />
-                            </a>
-                            <ol>
+                                <a 
+                                    href = {'https://open.spotify.com/playlist/' + this.state.playListId}
+                                    target = '_blank'
+                                    rel="noopener noreferrer">
+                                    <SelectButton 
+                                        text = 'Playlist Link'
+                                        className = "App-link recommend-button expandable"
+                                    />
+                                </a>  
+                            <ol className = 'song-list'>
                                 {listItems}
                             </ol>
                         </div>
