@@ -5,7 +5,6 @@ import { ClimbingBoxLoader } from 'react-spinners';
 import RecommendedListItem from './recommended-list-item';
 import AppContainer from './app-container';
 import SelectButton from './select-button';
-import Select from 'react-select';
 
 const sortOptions = [
     {value: 'popularity', label: 'by popularity'},
@@ -32,6 +31,8 @@ class RecommendedList extends Component {
             audio_url: "",
             isPlaying: false,
             isLoaded: false,
+            currentSort: null,
+            isSortedButtonClicked: false,
             playListId: null
         };
         this.renderItem = this.renderItem.bind(this);
@@ -41,7 +42,9 @@ class RecommendedList extends Component {
         this.onAudioClipStopped = this.onAudioClipStopped.bind(this);
         this.getUsersTopIds = this.getUsersTopIds.bind(this);
         this.getRecommendedTracksAndCreatePlaylist = this.getRecommendedTracksAndCreatePlaylist.bind(this);
-        
+        this.renderSortOption = this.renderSortOption.bind(this);
+        this.sortList = this.sortList.bind(this);
+
         this.getRecommendedTracksAndCreatePlaylist();
     }
 
@@ -338,6 +341,52 @@ class RecommendedList extends Component {
             />;
    }
 
+   renderSortOption(sortOption) {
+       return  <SelectButton 
+                    key = {sortOption.label}
+                    text = {sortOption.label}
+                    className = "sort-button clickable expandable"
+                    onClick = {this.sortList} 
+                    activeClassName = "sort-button clickable expandable selected"
+                    active = {this.state.currentSort === sortOption.value}
+                    id = {sortOption.value}
+                />;
+   }
+
+   sortList(sortMethod) {
+       try {
+        let recommendedList = this.state.recommendedList;
+        
+        if (sortMethod === 'random') {
+            recommendedList.sort((a, b) => {
+                return 0.5 - Math.random()
+             });
+        } else if (sortMethod === 'popularity') {
+             recommendedList.sort((a,b) => {
+                 return b.popularity - a.popularity
+             });
+        } else if (sortMethod === 'name') {
+            recommendedList.sort((a,b) => {
+                 return a.name.localeCompare(b.name)
+            })
+        } else if (sortMethod === 'artists[0].name') {
+             recommendedList.sort((a,b) => {
+                 return a.artists[0].name.localeCompare(b.artists[0].name)
+             })
+        }
+ 
+        this.setState({
+            recommendedList: recommendedList,
+            currentSort: sortMethod
+        })
+       } catch (error) {
+            console.log(error);
+            this.setState({
+                error: 'error' + ' while sorting'
+            })
+       }     
+   }
+
     render() {
         let errorMessage;
         if (this.state.error) {
@@ -350,6 +399,10 @@ class RecommendedList extends Component {
         
         if (this.state.isLoaded) {
             let listItems = this.state.recommendedList.map(this.renderItem);
+            let sortContent;
+            if (this.state.isSortedButtonClicked) {
+                sortContent = sortOptions.map(this.renderSortOption);
+            }
             return(
                 <AppContainer 
                     header = 'Song Recommendations'
@@ -363,15 +416,32 @@ class RecommendedList extends Component {
                                 controls>
                                 <source id = {'audio-player-source'} src = {this.state.preview_url}></source>
                             </audio>
-                                <a 
-                                    href = {'https://open.spotify.com/playlist/' + this.state.playListId}
-                                    target = '_blank'
-                                    rel="noopener noreferrer">
-                                    <SelectButton 
-                                        text = 'Playlist Link'
-                                        className = "App-link recommend-button expandable"
-                                    />
-                                </a>  
+                                <div className = 'top-recommended-options-container'>
+                                    <a 
+                                        href = {'https://open.spotify.com/playlist/' + this.state.playListId}
+                                        target = '_blank'
+                                        rel="noopener noreferrer">
+                                        <SelectButton 
+                                            text = 'Playlist Link'
+                                            className = "App-link recommend-button expandable"
+                                        />
+                                    </a>
+                                    <div 
+                                        className = {'App-link recommend-button expandable'}
+                                        onClick = {() => this.setState(
+                                            {
+                                                isSortedButtonClicked: !this.state.isSortedButtonClicked
+                                            })}
+                                    >
+                                            Sort Items
+                                            <div className = 'about-content'
+                                                style = 
+                                                    {{display: 
+                                                        this.state.isSortedButtonClicked ? 'block' : 'none'}}>
+                                                    {sortContent}
+                                            </div>
+                                    </div>     
+                                </div>
                             <ol className = 'song-list'>
                                 {listItems}
                             </ol>

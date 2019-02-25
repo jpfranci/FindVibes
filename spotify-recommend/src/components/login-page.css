@@ -73,6 +73,26 @@ a {
   width: 80vh;
 }
 
+.top-recommended-options-container{ 
+  display: flex;
+  flex-direction: row;
+  width: 100vh;
+  align-items: flex-start;
+  margin-left: 3vh;
+  justify-content: flex-start;
+}
+
+.sort-button {
+  background:  #c8d1c8;
+  border-radius: 2vh;
+  width: 75%;
+  margin-left: 3vh;
+  border: black;
+  border-width: 2px;
+  text-align: center;
+  padding: 2vh;
+}
+
 .loading-container {
   display: flex;
   margin-top: 20vh;
@@ -263,22 +283,7 @@ a {
   text-align: left;
 }
 
-.select-dropdown {
-  width: 40vh;
-  background: green;
-  border-radius: 5;
-}
 
-.top-recommended-page-buttons {
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  left: -5%;
-  margin-left: -14vh;
-}
 
 .login {
   margin-top: 25vh;
@@ -292,7 +297,7 @@ a {
 
 .recommend-button {
   width: 40vh;
-  margin-left: 29vh;
+  cursor: pointer;
 }
 
 .selected {
