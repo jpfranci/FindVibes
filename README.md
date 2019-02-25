@@ -1,1 +1,2 @@
-## Spotify Recommender built with React and Node
+## Spotify Recommender built with React
+
