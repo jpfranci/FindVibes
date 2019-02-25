@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AppContainer from './app-container';
-import Collapse from 'react-collapse';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -31,7 +30,7 @@ class LoginPage extends Component {
           content = {
             <div id = 'top' className = "opening-screen">
               <a className="App-link login expandable clickable"
-                href = "http://localhost:8888/login">
+                href = "/login">
                 Login to Spotify to begin
               </a>
               <div className = {aboutClassName}

@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
 class SelectButton extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const style = this.props.active ? this.props.activeClassName : this.props.className;
         const onClick = this.props.onClick ? () => this.props.onClick(this.props.id) : null

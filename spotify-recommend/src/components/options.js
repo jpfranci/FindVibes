@@ -123,10 +123,11 @@ class OptionsPage extends Component {
                             header = {'Pick how many top songs or artists to use for your recommendations'}
                             content = {songNumberSlider}
                         />
-                        <div className = 'submit-button expandable clickable'>
+                        <div 
+                            className = 'submit-button expandable clickable'
+                            onClick = {() => {this.props.onOptionsChange(this.state)}}>
                             <p 
                                 className = 'options-header'
-                                onClick = {() => {this.props.onOptionsChange(this.state)}}
                             >
                                 Create your personalized playlist!</p>
                         </div>

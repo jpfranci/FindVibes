@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
-import uuid from 'uuid';
 import { ClimbingBoxLoader } from 'react-spinners';
 import RecommendedListItem from './recommended-list-item';
 import AppContainer from './app-container';
 import SelectButton from './select-button';
 
 const sortOptions = [
-    {value: 'popularity', label: 'by popularity'},
+    {value: 'popularity', label: 'by song popularity'},
     {value: 'name', label: 'by song name'},
     {value: 'artists[0].name', label: 'by artist name'},
     {value: 'random', label: 'randomly'}
@@ -195,8 +194,8 @@ class RecommendedList extends Component {
             const userId = await spotifyApi.getMe();
 
             const recommendedPlaylist = await spotifyApi.createPlaylist(userId.id, 
-                {name: "Recommended Playlist " + uuid.v1(), 
-                description: "made from spotify song recommender", public: false});
+                {name: "Your Top Recommendations", 
+                description: "A playlist of recommended songs made with Find Vibes", public: false});
         
             await spotifyApi.addTracksToPlaylist
                 (recommendedPlaylist.id, recommendedListSongs);       
@@ -215,7 +214,6 @@ class RecommendedList extends Component {
                 isLoaded: true
             })
 
-            console.log(this.state);
         } else {
             this.setState({
                 error: ' Must have Spotify history to use this website'
@@ -433,7 +431,7 @@ class RecommendedList extends Component {
                                                 isSortedButtonClicked: !this.state.isSortedButtonClicked
                                             })}
                                     >
-                                            Sort Items
+                                            Sort Songs
                                             <div className = 'about-content'
                                                 style = 
                                                     {{display: 

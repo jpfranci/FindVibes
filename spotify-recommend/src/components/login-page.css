@@ -19,6 +19,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-content: center;
   justify-content: flex-start;
 }
 
@@ -76,10 +77,10 @@ a {
 .top-recommended-options-container{ 
   display: flex;
   flex-direction: row;
-  width: 100vh;
-  align-items: flex-start;
-  margin-left: 3vh;
-  justify-content: flex-start;
+  min-width: 90vh;
+  justify-content: center;
+  align-content: center;
+  position: relative;
 }
 
 .sort-button {
@@ -157,7 +158,6 @@ a {
   display: flex;
   font-size: 2vmin;
   flex-direction: row;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
   align-content: space-around;
@@ -178,7 +178,7 @@ a {
 .list-item-li {
   list-style-type: none;
   position: relative;
-  left: -3%;
+  left: -2.5%;
   margin: 1vh;
   border-radius: 2vh;
   min-width: 80vh;
@@ -197,7 +197,7 @@ a {
   width: 45vh;
   padding-right: 2vh;
   padding-left: 2vh;
-  font-size: calc(10px + 1.5vmin);
+  font-size: calc(14px + 1vmin);
   font-family: 'Open Sans';
 }
 
@@ -292,6 +292,9 @@ a {
 
 .options-button {
   font-size: calc(10px + 1vmin);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   width: 30vh;
 }
 

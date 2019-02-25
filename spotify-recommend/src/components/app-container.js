@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import logo from './spotify-logo.png';
 
 class AppContainer extends Component {
-    constructor(props) {
-        super(props);
-    }
-    
     render() {
         return (
             <div className = "App">

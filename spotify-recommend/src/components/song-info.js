@@ -13,9 +13,14 @@ class SongInfo extends Component {
         this.handleUrlClick = this.handleUrlClick.bind(this);
         this.addedToPlaylist = this.addedToPlaylist.bind(this);
     }
-
+    
     handleUrlClick(url) {
-        window.open(url, '_blank');
+        const a = document.createElement("a");
+        a.href = url;
+        a.target = '_blank';
+        a.rel = "noopener noreferrer";
+        a.click();
+        a.remove();
     }
 
     addedToPlaylist() {
