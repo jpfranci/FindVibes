@@ -184,7 +184,8 @@ class RecommendedList extends Component {
     }
 
     /*
-    * Creates a Spotify playlist based on recommendedTracks and also with an artist's top tracks
+    * Creates a Spotify playlist based on recommendedTracks and appends an array of SpotifyTrackObjects
+    * to each recommended track representing the artist's top songs
     * @param {SpotifyTrackObject[]} recommendedTracks, an array of Spotify tracks objects 
     * representing a user's recommended tracks
     */
@@ -279,7 +280,7 @@ class RecommendedList extends Component {
 
     /*
     * Plays or pauses a given audio_url in this player
-    * @param {audio_url}, a url to an audio recording
+    * @param {string}, a url to an audio recording
     * @returns {RecommendedListItem}, returns a rendered RecommendedListItem
     */
     onPlayClickedAudio(audio_url) {
@@ -323,8 +324,7 @@ class RecommendedList extends Component {
 
     /*
     * Renders a RecommendedListItem with prop.listItem set to listItem
-    * @param {Object}, listItem a recommendedListItem consisting of a song, producing artist's top songs,
-    * popularity, song url, album info, etc.
+    * @param {Object}, listItem a SpotifyTrackObject with the artist's top songs appended
     * @returns {RecommendedListItem}, returns a rendered RecommendedListItem
     */
    renderItem(listItem) {
@@ -339,6 +339,13 @@ class RecommendedList extends Component {
             />;
    }
 
+    /*
+    * Renders a button with a given label and sorts the list by a given property when clicked
+    * @param {Object}, an object with the label for the sort option and 
+    * the SpotifyTrackObject property to sort with or random
+    * @returns {SelectButton}, returns a Select Button that sorts the list by sort 
+    * option property when clicked
+    */
    renderSortOption(sortOption) {
        return  <SelectButton 
                     key = {sortOption.label}
@@ -351,6 +358,10 @@ class RecommendedList extends Component {
                 />;
    }
 
+    /*
+    * Sorts this recommended list of tracks by a sort method property and sets state to the sorted list
+    * @param {string}, a SpotifyTrackObject property to sort with or random
+    */
    sortList(sortMethod) {
        try {
         let recommendedList = this.state.recommendedList;

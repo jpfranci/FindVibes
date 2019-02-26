@@ -19,16 +19,29 @@ class RecommendedListItem extends Component {
         this.getPlayOrPause = this.getPlayOrPause.bind(this);
     }
 
+    /*
+    * Fires when the expand button or song text is clicked and sets this state to opened,
+    * expanding its details
+    */
     handleListItemClicked() {
         this.setState (state => ({
             isOpened: !state.isOpened
         }));
     }
 
+    /*
+    * Fires when play button is clicked and calls the playClicked props with the song preview url
+    * @param {string}, previewUrl a url representing a link to a 30 second preview of a song
+    */ 
     onPlayClicked(previewUrl) {
         this.props.playClicked(previewUrl);
     }
 
+    /*
+    * Renders an artist's top track and passes the appropriate icon if there is a preview url 
+    * as a parameter
+    * @param {SpotifyTrackObject}, track, a SpotifyTrackObject containing song info
+    */ 
     renderTopTrack(track) {
         const playOrPause = this.getPlayOrPause(track.preview_url);
         const listItem = this.props.listItem;   
