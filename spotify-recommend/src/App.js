@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import LoginPage from "./components/login-page.js";
-import RecommendedList from "./components/recommended-list.js";
-import OptionsPage from './components/options.js';
+import LoginPage from "./components/login-page";
+import RecommendedListPage from "./components/recommended-page/recommended-list";
+import OptionsPage from './components/options-page/options';
+import './App.css';
 
 class App extends Component {
   /*
@@ -53,7 +54,7 @@ class App extends Component {
         page = <OptionsPage onOptionsChange = {this.onOptionsChange}/>
     } else {
         page = 
-          <RecommendedList
+          <RecommendedListPage
             access_token = {this.state.access_token}
             options =  {this.state.options}  
           />

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import OptionsBox from './options-box.js';
-import SelectButton from './select-button.js';
-import AppContainer from './app-container.js';
+import SelectButton from '../select-button';
+import AppContainer from '../app-container';
 
 const timeRangeArray = [
     {name: 'short_term', text: 'The last 4 weeks'}, 

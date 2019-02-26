@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './login-page.css';
 import { Collapse } from 'react-collapse';
 import { FaVolumeSlash } from 'react-icons/fa';
 import { IoIosPlayCircle } from "react-icons/io";

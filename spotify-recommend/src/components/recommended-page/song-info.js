@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './login-page.css';
 import { FaSpotify, FaPlus, FaCheck } from 'react-icons/fa';
 import { IoIosArrowDown } from "react-icons/io";
 

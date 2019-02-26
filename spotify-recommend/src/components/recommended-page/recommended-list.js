@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
-import { ClimbingBoxLoader } from 'react-spinners';
 import RecommendedListItem from './recommended-list-item';
-import AppContainer from './app-container';
-import SelectButton from './select-button';
+import AppContainer from '../app-container';
+import SelectButton from '../select-button';
+import LoadingScreen from './loading-screen';
 
 const sortOptions = [
     {value: 'popularity', label: 'by song popularity'},
@@ -13,7 +13,7 @@ const sortOptions = [
 ];
 const spotifyApi = new SpotifyWebApi();
 const maxSeeds = 5;
-class RecommendedList extends Component {
+class RecommendedListPage extends Component {
     /*
     * Constructs this recommendedList and creates a playlist from user's top tracks and artists
     * @param {string} access_token, access_token to use spotify web api
@@ -442,13 +442,13 @@ class RecommendedList extends Component {
                                                 isSortedButtonClicked: !this.state.isSortedButtonClicked
                                             })}
                                     >
-                                            Sort Songs
-                                            <div className = 'about-content centered'
-                                                style = 
-                                                    {{display: 
-                                                        this.state.isSortedButtonClicked ? 'flex' : 'none'}}>
-                                                    {sortContent}
-                                            </div>
+                                        Sort Songs
+                                        <div 
+                                            className = 'about-content centered'
+                                            style = 
+                                                {{display: this.state.isSortedButtonClicked ? 'flex' : 'none'}}>
+                                                {sortContent}
+                                        </div>
                                     </div>     
                                 </div>
                             <ol className = 'song-list'>
@@ -465,23 +465,12 @@ class RecommendedList extends Component {
                 loadingMessage = errorMessage
             }
             return(
-                <AppContainer 
-                    header = "Song Recommendations"
-                    content = {
-                        <div className = 'loading-container'>
-                            <ClimbingBoxLoader 
-                                color={'#4dcc62'}
-                                sizeUnit = {'vh'}
-                                size = {3}
-                                loading = {true}
-                            />
-                            {loadingMessage}
-                        </div>
-                    }
-                />      
+                <LoadingScreen
+                    loadingMessage = {loadingMessage}
+                />
             )
         }
     }
 }
 
-export default RecommendedList;
+export default RecommendedListPage;
