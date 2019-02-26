@@ -33,6 +33,8 @@ firebase-debug.log*
 # Firebase cache
 spotify-recommend/.firebase
 
+spotify-recommend/functions
+
 # Firebase config
 spotify-recommend/.firebaserc
 spotify-recommend/firebase.json
