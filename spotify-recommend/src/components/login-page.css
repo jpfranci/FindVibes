@@ -1,5 +1,37 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
+@media only screen  and (min-width: 1000px) {
+  .expanded {
+    width: 80vh;
+    position: relative;
+    left: -23%;
+  }
+
+  .recommend-button{
+    width: 35vh;
+  }
+
+  .about-content.centered {
+    margin-right: 1vw;
+  }
+
+}
+
+@media only screen and (max-width: 950px) {
+  .song-list {
+    max-width: 80vh;
+  }
+
+  .recommend-button {
+    width: 30vh;
+  }
+
+  .about-content.centered {
+    margin-right: 5vw;
+  }
+
+}
+
 
 body {
   background-color: #1f2127;
@@ -77,10 +109,8 @@ a {
 .top-recommended-options-container{ 
   display: flex;
   flex-direction: row;
-  min-width: 90vh;
   justify-content: center;
-  align-content: center;
-  position: relative;
+  margin-right: 4%;
 }
 
 .sort-button {
@@ -123,12 +153,12 @@ a {
   width: 70vh;
   height: 33vh;
   position: relative;
-  left: -1%;
+  left: -1.5%;
 }
 
 .App-header {
   padding: 1vh;
-  font-size: calc(10px + 3vmin);
+  font-size: calc(10px + 2vmin);
   color: #4dcc62;
   position: relative;
   margin-top: -14vh;
@@ -161,9 +191,7 @@ a {
   align-items: center;
   justify-content: space-around;
   align-content: space-around;
-  min-width: 80vh;
 }
-
 
 .progress {
   width: 10vh;
@@ -178,7 +206,7 @@ a {
 .list-item-li {
   list-style-type: none;
   position: relative;
-  left: -2.5%;
+  left: -5.5%;
   margin: 1vh;
   border-radius: 2vh;
   min-width: 80vh;
@@ -200,6 +228,8 @@ a {
   font-size: calc(14px + 1vmin);
   font-family: 'Open Sans';
 }
+
+
 
 .audio-preview {
   width: 7vh;
@@ -261,29 +291,19 @@ a {
   font-size: calc(10px + 2vmin);
   font-family: 'Open Sans';
   background: #4dcc62;
-  font-weight: 600;
+  font-weight: 500;
   margin: 2vh;
   display: block;
   border-radius: 5vh;
   padding: 2vh;
 }
 
-.expanded {
-  width: 80vh;
-  position: relative;
-  left: -23%;
-
-}
-
 .about-content {
-  display: block;
-  flex-direction: column;
+  display: flex;
   font-size: calc(10px + 1vmin);
-  align-items: flex-start;
   text-align: left;
+  flex-direction: column;
 }
-
-
 
 .login {
   margin-top: 25vh;
@@ -299,8 +319,12 @@ a {
 }
 
 .recommend-button {
-  width: 40vh;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 }
 
 .selected {
@@ -310,7 +334,7 @@ a {
 .url-logo {
   height: 6vh;
   color: black;
-  width: 6vh;
+  width: 10vh;
   margin: 2vh;
 }
 

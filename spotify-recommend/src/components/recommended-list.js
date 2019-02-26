@@ -416,7 +416,7 @@ class RecommendedList extends Component {
                 <AppContainer 
                     header = 'Song Recommendations'
                     content = {
-                        <div>
+                        <div className = 'recommended-list-container'>
                             {errorMessage}
                             <audio 
                                 className = "audio-player" 
@@ -443,10 +443,10 @@ class RecommendedList extends Component {
                                             })}
                                     >
                                             Sort Songs
-                                            <div className = 'about-content'
+                                            <div className = 'about-content centered'
                                                 style = 
                                                     {{display: 
-                                                        this.state.isSortedButtonClicked ? 'block' : 'none'}}>
+                                                        this.state.isSortedButtonClicked ? 'flex' : 'none'}}>
                                                     {sortContent}
                                             </div>
                                     </div>     
