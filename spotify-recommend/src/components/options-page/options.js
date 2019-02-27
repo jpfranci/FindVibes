@@ -28,7 +28,7 @@ class OptionsPage extends Component {
             timeRange: 'medium_term',
             playListLength: 50, 
             recommendationsMethod: 'split',
-            useTopTracks: 10  
+            useTopTracks: 20  
         }
 
         this.onPlayListLengthChange = this.onPlayListLengthChange.bind(this);

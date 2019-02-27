@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
-@media only screen  and (min-width: 1000px) {
+@media only screen  and (min-aspect-ratio: 1) {
   .expanded {
     width: 80vh;
     position: relative;
@@ -73,7 +73,7 @@ a {
 }
 
 .slider-container {
-  width: 100%;
+  width: 85%;
   position: relative;
   margin-top: -4vh; 
 }

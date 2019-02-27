@@ -4,7 +4,7 @@ import logo from './spotify-logo.png';
 class AppContainer extends Component {
     render() {
         return (
-            <div className = "App">
+            <div id = "App" className = "App">
                 <img className = "logo" src={logo} alt = {'problem here'}></img>
                 <header className="App-header list"> 
                     <h2>{this.props.header}</h2> 
