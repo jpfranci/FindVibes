@@ -42,13 +42,6 @@ class App extends Component {
     })
   }
 
-  zoomOut(ratio) {
-    if (window.innerWidth < 800) {
-      let body = document.getElementsByTagName("body")[0];
-      body.style.zoom = ratio;
-    }
-  }
-
   /*
   * Renders the user's recommended songs if successfully logged in else displays a login page
   */
@@ -57,17 +50,14 @@ class App extends Component {
 
     if(!this.state.isLoggedIn) {
         page = <LoginPage/>
-        this.zoomOut(window.innerWidth/window.innerHeight);
     } else if (!this.state.options) {
         page = <OptionsPage onOptionsChange = {this.onOptionsChange}/>
-        this.zoomOut(0.73);
     } else {
         page = 
           <RecommendedListPage
             access_token = {this.state.access_token}
             options =  {this.state.options}  
           />
-        this.zoomOut(window.innerWidth/window.innerHeight);
     }
     
     return (

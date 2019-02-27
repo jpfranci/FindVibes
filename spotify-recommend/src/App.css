@@ -1,33 +1,65 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
-@media only screen  and (min-aspect-ratio: 1) {
-  .expanded {
-    width: 80vh;
-    position: relative;
-    left: -23%;
-  }
-
+@media only screen  and (min-width: 1000px) {
   .recommend-button{
-    width: 35vh;
+    width: 35vmin;
   }
 
   .about-content.centered {
     margin-right: 1vw;
   }
 
+  .options-button {
+    font-size: calc(10px + 1vmin);
+  }
+
+  .song-details {
+    font-size: calc(14px + 1vmin);
+    width: 45vmin;
+  }
+
+  .list-item-li {
+    left: -8%;
+  }
+
+  .App-link {
+    font-size: calc(10px + 2vmin);
+  }
 }
 
 @media only screen and (max-width: 950px) {
   .song-list {
-    max-width: 80vh;
+    max-width: 80vmin;
   }
 
   .recommend-button {
-    width: 30vh;
+    width: 30vmin;
   }
 
   .about-content.centered {
     margin-right: 5vw;
+  }
+
+  .options-button {
+    font-size: calc(10px + 0.5vmin);
+  }
+
+  .song-details {
+    font-size: calc(10px + 0.7vmin);
+    width: 40vmin;
+  }
+
+  .list-item-li {
+    left: -7%;
+  }
+
+  .App-link {
+    font-size: calc(10px + 0.7vmin);
+
+  }
+
+  .sort-button {
+    font-size: calc(10px + 0.3vmin);
   }
 
 }
@@ -35,7 +67,7 @@
 
 body {
   background-color: #1f2127;
-  height: 100vh;
+  height: 100vmin;
 }
 
 a {
@@ -46,7 +78,7 @@ a {
   text-align: center;
   height: 100vh;
   color: #4dcc62;
-  min-width: 100vh;
+  min-width: 100vmin;
   background-repeat: repeat;
   display: flex;
   flex-direction: column;
@@ -61,7 +93,7 @@ a {
 
 .error-header {
   color: #c0586a;
-  font-size: calc(10px + 4vh);
+  font-size: calc(10px + 4vmin);
 }
 
 .error-body {
@@ -69,41 +101,41 @@ a {
 }
 
 .slider {
-  margin-bottom: 3vh;
+  margin-bottom: 3vmin;
 }
 
 .slider-container {
   width: 85%;
   position: relative;
-  margin-top: -4vh; 
+  margin-top: -4vmin; 
 }
 
 .slider-label {
   color: white;
-  margin-bottom: -0.5vh;
-  font-size: calc(10px + 1.2vh);
+  margin-bottom: -0.5vmin;
+  font-size: calc(10px + 1.2vmin);
 }
 
 .submit-button {
-  width: 60vh;
-  padding: 1vh;
-  margin: 3vh 0vh 2vh 10vh;
+  width: 60vmin;
+  padding: 1vmin;
+  margin: 3vmin 0vmin 2vmin 10vmin;
   background: #4dcc62;
   color: black;
-  border-radius: 5vh;
+  border-radius: 5vmin;
 }
 
 
 .options-header {
-  font-size: calc(10px + 1.5vh);
+  font-size: calc(10px + 1.5vmin);
   font-weight: 600;
 }
 
 .options-container {
-  margin: 1vh;
+  margin: 1vmin;
   background-color: #39403a;
-  border-radius: 2vh;
-  width: 80vh;
+  border-radius: 2vmin;
+  width: 80vmin;
 }
 
 .top-recommended-options-container{ 
@@ -115,18 +147,19 @@ a {
 
 .sort-button {
   background:  #c8d1c8;
-  border-radius: 2vh;
+  border-radius: 2vmin;
   width: 75%;
-  margin-left: 3vh;
+  margin-top: -1vmin;
+  margin-left: 3vmin;
   border: black;
   border-width: 2px;
   text-align: center;
-  padding: 2vh;
+  padding: 2vmin;
 }
 
 .loading-container {
   display: flex;
-  margin-top: 20vh;
+  margin-top: 20vmin;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -136,33 +169,34 @@ a {
   display: flex;
   justify-content: center;
   align-content: center;
-  width: 60vh;
-  max-height: 80vh;
+  width: 60vmin;
+  max-height: 80vmin;
+  margin-top: 20vmin;
   flex-direction: column;
 }
 
 .time-range-container {
   display: flex;
-  width: 80vh;
+  width: 80vmin;
   justify-content: space-around;
   align-content: space-around;
   flex-direction: row;
 }
 
 .logo {
-  width: 70vh;
-  height: 33vh;
+  width: 70vmin;
+  height: 33vmin;
   position: relative;
   left: -1.5%;
 }
 
 .App-header {
-  padding: 1vh;
+  padding: 1vmin;
   font-size: calc(10px + 2vmin);
   color: #4dcc62;
   position: relative;
-  margin-top: -14vh;
-  margin-bottom: 20vh;
+  margin-top: -14vmin;
+  margin-bottom: 20vmin;
 }
 
 .collapse-container {
@@ -171,17 +205,17 @@ a {
   color: black;
   background: #4dcc62;
   font-weight: 600;
-  margin: 2vh;
+  margin: 2vmin;
   align-items: center;
   justify-content: center;
-  border-radius: 5vh;
+  border-radius: 5vmin;
   font-size: 2vmin;
   align-content: space-around;
-  min-width: 80vh;
+  min-width: 80vmin;
 }
 
 .App-header.list {
-  margin-bottom: -2vh;
+  margin-bottom: -2vmin;
 }
 
 .list-item {
@@ -194,22 +228,21 @@ a {
 }
 
 .progress {
-  width: 10vh;
-  height: 10vh;
+  width: 10vmin;
+  height: 10vmin;
 }
 
 .popularity-label {
-  margin-left: 1vh;
-  margin-right: 26vh;
+  margin-left: 1vmin;
+  margin-right: 26vmin;
 }
 
 .list-item-li {
   list-style-type: none;
   position: relative;
-  left: -5.5%;
-  margin: 1vh;
-  border-radius: 2vh;
-  min-width: 80vh;
+  margin-bottom: 1vmin;
+  border-radius: 2vmin;
+  min-width: 80vmin;
   transform: perspective(1px) translateZ(0);
   box-shadow: 0 0 1px transparent;
   transition-duration: 0.3s;
@@ -222,18 +255,16 @@ a {
 }   
 
 .song-details{
-  width: 45vh;
-  padding-right: 2vh;
-  padding-left: 2vh;
-  font-size: calc(14px + 1vmin);
+  padding-right: 2vmin;
+  padding-left: 2vmin;
   font-family: 'Open Sans';
 }
 
 
 
 .audio-preview {
-  width: 7vh;
-  height: 7vh;
+  width: 7vmin;
+  height: 7vmin;
   color: black;
 }
 
@@ -242,34 +273,34 @@ a {
 }
 
 .album-cover {
-  margin: 1vh;
+  margin: 1vmin;
 }
 
 .collapsible {
-  min-height: 10vh;
+  min-height: 10vmin;
   font-family: 'Open Sans';
   background: #868b74;
   color:  #c8d1c8;
   font-weight: 400;
-  border-bottom-left-radius: 2vh;
-  border-bottom-right-radius: 2vh;
-  padding: 4vh;
+  border-bottom-left-radius: 2vmin;
+  border-bottom-right-radius: 2vmin;
+  padding: 4vmin;
   flex-direction: column;
 }
 
 .collapsible-header {
-  margin-top: -3vh;
+  margin-top: -3vmin;
   display: flex;
   align-content: flex-start;
 }
 
 .expand-button {
-  padding-left: 2vh;
+  padding-left: 2vmin;
   cursor: pointer;
-  padding-right: 1vh;
+  padding-right: 1vmin;
   color: black;
-  width: 5vh;
-  height: 5vh;
+  width: 5vmin;
+  height: 5vmin;
 }
 
 .expandable:hover {
@@ -288,34 +319,40 @@ a {
 
 .App-link {
   color: #070707;
-  font-size: calc(10px + 2vmin);
   font-family: 'Open Sans';
   background: #4dcc62;
   font-weight: 500;
-  margin: 2vh;
+  margin: 2vmin;
   display: block;
-  border-radius: 5vh;
-  padding: 2vh;
+  border-radius: 5vmin;
+  padding: 2vmin;
 }
 
 .about-content {
   display: flex;
   font-size: calc(10px + 1vmin);
   text-align: left;
+  margin-top: 5vmin;
   flex-direction: column;
 }
 
 .login {
-  margin-top: 25vh;
+  margin-top: 25vmin;
 }
 
 
 .options-button {
-  font-size: calc(10px + 1vmin);
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 30vh;
+  width: 35vmin;
+}
+
+.expanded {
+  width: 80vmin;
+  left: -22%;
+  margin-top: 3vmin;
+  position: relative;
 }
 
 .recommend-button {
@@ -332,10 +369,10 @@ a {
 }
 
 .url-logo {
-  height: 6vh;
+  height: 6vmin;
   color: black;
-  width: 10vh;
-  margin: 2vh;
+  width: 10vmin;
+  margin: 2vmin;
 }
 
 .loading-label {

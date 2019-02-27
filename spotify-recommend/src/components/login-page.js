@@ -31,11 +31,11 @@ class LoginPage extends Component {
             <div id = 'top' className = "opening-screen">
               <a className="App-link login expandable clickable"
                 href = "/login">
-                Login to Spotify to begin
+                <strong>Login to Spotify to begin</strong>
               </a>
               <div className = {aboutClassName}
                     onClick = {this.onAboutClicked.bind(this)}>
-                    About FindVibes
+                    <strong>About FindVibes</strong>
                     <div className = 'about-content'
                           style = {{display: this.state.isAboutClicked ? 'flex' : 'none'}}>
                       <p>We use your top songs and top artists from Spotify to create a personalized playlist for 
