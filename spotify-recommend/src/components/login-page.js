@@ -20,7 +20,7 @@ class LoginPage extends Component {
   }
 
   render() {
-    const aboutClassName = this.state.isAboutClicked ? 'App-link expandable clickable expanded'
+    const aboutClassName = this.state.isAboutClicked ? 'App-link expandable clickable expanded opening-page-header'
       : 
       'App-link expandable clickable';
     console.log(this.state.isAboutClicked);
@@ -29,19 +29,20 @@ class LoginPage extends Component {
           header = "Song Recommendations"
           content = {
             <div id = 'top' className = "opening-screen">
-              <a className="App-link login expandable clickable"
+              <a className="App-link login opening-page-header expandable clickable"
                 href = "/login">
-                <strong>Login to Spotify to begin</strong>
+                Login to Spotify to begin
               </a>
               <div className = {aboutClassName}
                     onClick = {this.onAboutClicked.bind(this)}>
-                    <strong>About FindVibes</strong>
+                    About FindVibes
                     <div className = 'about-content'
                           style = {{display: this.state.isAboutClicked ? 'flex' : 'none'}}>
                       <p>We use your top songs and top artists from Spotify to create a personalized playlist for 
-                         you in whichever time period you want.</p>
-                      <p>Our site also offers 30 second music previews for your playlist and links
-                       you to each song's album and each artist's top songs</p>
+                         you in whichever time period you want. We offer more flexibility than Spotify's
+                         usual playlist recommendations and let you finetune how you get your recommendations.</p>
+                      <p>Our site also offers 30 second music previews for your new songs and links
+                       you to each artist's top songs and each song's album.</p>
                       <p id = 'privacy'>We don't collect any data and permissions are used for the sake of creating the best 
                       and most relevant playlists for our users. </p>
                     </div>

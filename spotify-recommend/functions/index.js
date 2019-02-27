@@ -12,6 +12,7 @@ var functions = require('firebase-functions');
 var cors = require('cors');
 var querystring = require('querystring');
 
+var client_id = '932fead81902483fa625c45870b2c5ad'; // Your client id
 var redirect_uri = 'https://find-vibes.firebaseapp.com/'; // Your redirect uri
 
 /**

@@ -19,11 +19,44 @@
   }
 
   .list-item-li {
-    left: -8%;
+    left: -4.5%;
   }
 
   .App-link {
-    font-size: calc(10px + 2vmin);
+    font-size: calc(10px + 1vmin);
+  }
+
+  .login {
+    margin-top: 15vmin;
+  }
+
+  .top-recommended-options-container {
+    font-size: calc(14px + 2vmin);
+  }
+
+  .expand-button {
+    padding-right: 1vmin;
+    padding-left: 1vmin;
+  }
+
+  .expandable:hover {
+    transform: scale(1.1);
+  }
+
+  .opening-page-header {
+    font-weight: 600;
+  }
+
+  .options-header {
+    font-weight: 600;
+  }
+
+  body {
+    font-weight: 500;
+  }
+
+  .collapsible-header {
+    font-size: 2vmin;
   }
 }
 
@@ -55,13 +88,48 @@
 
   .App-link {
     font-size: calc(10px + 0.7vmin);
-
   }
 
   .sort-button {
     font-size: calc(10px + 0.3vmin);
   }
 
+  .login {
+    margin-top: 25vmin;
+  }
+
+  .album-cover {
+    max-width: 11vmin;
+  }
+
+  .expand-button {
+    padding-right: 1.5vmin;
+    padding-left: 1.5vmin;
+  }
+
+  .expandable:hover, .expandable:active, .expandable:focus {
+    transform: scale(1.03);
+  }
+
+  .opening-page-header {
+    font-weight: 525;
+  }
+
+  .options-header {
+    font-weight: 525;
+  }
+
+  body {
+    font-weight: 425;
+  }
+
+  .collapse-container {
+    font-size: calc(10px + 0.8vmin);
+  }
+
+  .collapsible-header {
+    font-size: 0.9vmin;
+  }
 }
 
 
@@ -128,7 +196,6 @@ a {
 
 .options-header {
   font-size: calc(10px + 1.5vmin);
-  font-weight: 600;
 }
 
 .options-container {
@@ -142,7 +209,6 @@ a {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-right: 4%;
 }
 
 .sort-button {
@@ -204,12 +270,10 @@ a {
   flex-direction: column;
   color: black;
   background: #4dcc62;
-  font-weight: 600;
   margin: 2vmin;
   align-items: center;
   justify-content: center;
   border-radius: 5vmin;
-  font-size: 2vmin;
   align-content: space-around;
   min-width: 80vmin;
 }
@@ -295,16 +359,10 @@ a {
 }
 
 .expand-button {
-  padding-left: 2vmin;
   cursor: pointer;
-  padding-right: 1vmin;
   color: black;
   width: 5vmin;
   height: 5vmin;
-}
-
-.expandable:hover {
-  transform: scale(1.1);
 }
 
 .list-item-li:nth-child(odd){
@@ -321,7 +379,6 @@ a {
   color: #070707;
   font-family: 'Open Sans';
   background: #4dcc62;
-  font-weight: 500;
   margin: 2vmin;
   display: block;
   border-radius: 5vmin;
@@ -372,7 +429,6 @@ a {
   height: 6vmin;
   color: black;
   width: 10vmin;
-  margin: 2vmin;
 }
 
 .loading-label {
