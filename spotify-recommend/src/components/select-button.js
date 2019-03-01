@@ -11,7 +11,7 @@ class SelectButton extends Component {
             >
                 {this.props.text}
             </p>
-            )
+        )
     }
 }
 

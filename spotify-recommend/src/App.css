@@ -387,6 +387,7 @@ a {
   text-align: left;
   margin-top: 5vmin;
   flex-direction: column;
+  margin-left: 1vmin;
 }
 
 .options-button {

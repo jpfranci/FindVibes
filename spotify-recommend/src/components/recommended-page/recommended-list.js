@@ -443,7 +443,7 @@ class RecommendedListPage extends Component {
                     sortButtons = {sortButtons}
                     recommendedListItems = {listItems}
                 />      
-            )
+            );
         } else {
             let loadingMessage =  
                 <h2 className = 'loading-label'>Making your recommended playlist</h2>;
@@ -454,7 +454,7 @@ class RecommendedListPage extends Component {
                 <LoadingScreen
                     loadingMessage = {loadingMessage}
                 />
-            )
+            );
         }
     }
 }

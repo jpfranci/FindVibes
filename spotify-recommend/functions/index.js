@@ -11,7 +11,9 @@ var express = require('express'); // Express web server framework
 var functions = require('firebase-functions');
 var cors = require('cors');
 var querystring = require('querystring');
+var credentials = require('./credentials');
 
+var client_id = credentials.client_id;
 var redirect_uri = 'https://find-vibes.firebaseapp.com/'; // Your redirect uri
 
 /**

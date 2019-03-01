@@ -29,7 +29,7 @@ class RecommendedListContainer extends Component {
                 </div>
                 }
             />           
-        )
+        );
     }    
 }
 

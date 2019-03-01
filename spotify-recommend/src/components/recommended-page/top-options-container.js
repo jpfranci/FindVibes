@@ -21,14 +21,13 @@ class TopOptionsContainer extends Component {
                     Sort Songs
                     <div 
                         className = 'about-content centered'
-                        style = 
-                            {{display: this.props.isSortButtonClicked ? 'flex' : 'none'}}
+                        style = {{display: this.props.isSortButtonClicked ? 'flex' : 'none'}}
                     >
                         {this.props.sortButtons}
                     </div>
                 </div>     
             </div>
-        )
+        );
     }
 }
 

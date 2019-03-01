@@ -19,7 +19,7 @@ class LoadingScreen extends Component {
                     </div>
                 }
             />      
-        )
+        );
     }
 }
 

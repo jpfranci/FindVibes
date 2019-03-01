@@ -68,8 +68,8 @@ class SongInfo extends Component {
                     {this.props.playInfo}
                 </div>
                 {addIconOrExpandable}  
-        </div>
-        )
+            </div>
+        );
     } 
 }
 
