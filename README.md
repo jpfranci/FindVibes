@@ -3,7 +3,6 @@
 
 Each song has 30 second previews of its chorus and expands to show its artist's top songs with options to add those songs onto the playlist. Links for the album and song, even the artist's top songs are also included in each row of the table and the table itself can be easily sorted by popularity, song name, artist name, or randomly. 
 
-Purpose of Project: Learn REST calls and basics of handling HTML requests through a backend. Create a responsive website with React displaying that data by using viewport sizing.
-
 <img width="900" alt="song recommendation 2" src="https://user-images.githubusercontent.com/42393264/53393205-99157d00-3950-11e9-9a87-c96fd70746a9.PNG">
 
+Purpose of Project: Learn REST calls and basics of handling HTML requests through a backend. Create a responsive website with React displaying that data by using viewport sizing and compatible with all devices.
