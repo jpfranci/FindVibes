@@ -46,6 +46,7 @@ class RecommendedListPage extends Component {
             isSortedButtonClicked: false,
             playListId: null
         };
+        
         this.renderItem = this.renderItem.bind(this);
         this.onPlayClickedAudio = this.onPlayClickedAudio.bind(this);
         this.addToPlayList = this.addToPlayList.bind(this);
@@ -431,7 +432,7 @@ class RecommendedListPage extends Component {
             if (this.state.isSortedButtonClicked) {
                 sortButtons = sortOptions.map(this.renderSortOption);
             }
-            return(
+            return (
                 <RecommendedListContainer
                     errorMessage = {errorMessage}
                     onAudioClipStopped = {this.onAudioClipStopped}

@@ -30,7 +30,7 @@ class LoginPage extends Component {
           content = {
             <div id = 'top' className = "opening-screen">
               <a className="App-link login  expandable clickable"
-                href = "http://localhost:8888/login">
+                href = "/login">
                 Login to Spotify to begin
               </a>
               <div className = {aboutClassName}
@@ -43,8 +43,8 @@ class LoginPage extends Component {
                          usual playlist recommendations and let you finetune how you get your recommendations.</p>
                       <p>Our site also offers 30 second music previews for your new songs and links
                        you to each artist's top songs and each song's album.</p>
-                      <p id = 'privacy'>We don't collect any data and permissions are used for the sake of creating the best 
-                      and most relevant playlists for our users. </p>
+                      <p id = 'privacy'>We don't collect any of your Spotify data and permissions are used 
+                      for the sake of creating the best and most relevant playlists for our users. </p>
                     </div>
               </div>
             </div>

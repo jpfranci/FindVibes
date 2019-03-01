@@ -23,11 +23,11 @@
   }
 
   .App-link {
-    font-size: calc(10px + 1vmin);
+    font-size: calc(10px + 1.2vmin);
   }
 
   .login {
-    margin-top: 10vmin;
+    margin-top: 20vmin;
   }
 
   .top-recommended-options-container {
@@ -44,7 +44,7 @@
   }
 
   .opening-page-header {
-    font-weight: 600;
+    font-weight: 575;
   }
 
   .options-header {
@@ -388,11 +388,6 @@ a {
   margin-top: 5vmin;
   flex-direction: column;
 }
-
-.login {
-  margin-top: 25vmin;
-}
-
 
 .options-button {
   display: flex;
