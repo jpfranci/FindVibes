@@ -20,7 +20,7 @@ class LoginPage extends Component {
   }
 
   render() {
-    const aboutClassName = this.state.isAboutClicked ? 'App-link expandable clickable expanded opening-page-header'
+    const aboutClassName = this.state.isAboutClicked ? 'App-link opening-page-header expandable clickable expanded'
       : 
       'App-link expandable clickable';
     console.log(this.state.isAboutClicked);
@@ -29,8 +29,8 @@ class LoginPage extends Component {
           header = "Song Recommendations"
           content = {
             <div id = 'top' className = "opening-screen">
-              <a className="App-link login opening-page-header expandable clickable"
-                href = "/login">
+              <a className="App-link login  expandable clickable"
+                href = "http://localhost:8888/login">
                 Login to Spotify to begin
               </a>
               <div className = {aboutClassName}

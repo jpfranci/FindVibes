@@ -27,7 +27,7 @@
   }
 
   .login {
-    margin-top: 15vmin;
+    margin-top: 10vmin;
   }
 
   .top-recommended-options-container {
@@ -56,7 +56,7 @@
   }
 
   .collapsible-header {
-    font-size: 2vmin;
+    font-size: calc(14px + 2vmin);
   }
 }
 
@@ -128,7 +128,7 @@
   }
 
   .collapsible-header {
-    font-size: 0.9vmin;
+    font-size: calc(10px + 1.2vmin);
   }
 }
 
@@ -153,10 +153,6 @@ a {
   align-items: center;
   align-content: center;
   justify-content: flex-start;
-}
-
-.audio-player {
-  display: none;
 }
 
 .error-header {

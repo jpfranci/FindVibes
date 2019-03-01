@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
 import RecommendedListItem from './recommended-list-item';
-import AppContainer from '../app-container';
+import RecommendedListContainer from './recommended-list-container';
 import SelectButton from '../select-button';
 import LoadingScreen from './loading-screen';
 
@@ -11,6 +11,18 @@ const sortOptions = [
     {value: 'artists[0].name', label: 'by artist name'},
     {value: 'random', label: 'randomly'}
 ];
+
+const errorMessages = {
+    0: "There are some issues with some ad-blockers interfering with our requests with Spotify servers." +
+    " (Don't worry we don't have any ads)" + " Please whitelist us and try again.",
+    400: "Sorry, page not found.",
+    401: "Please refresh the page because permissions for Spotify has expired",
+    429: "Site is going through heavy traffic. Please try again later",
+    500: "Internal Server Error, something went wrong on Spotify's end",
+    502: "Bad Gateway, please try again later",
+    503: "Spotify servers are going through some traffic. Please try again later."
+};
+
 const spotifyApi = new SpotifyWebApi();
 const maxSeeds = 5;
 class RecommendedListPage extends Component {
@@ -39,6 +51,7 @@ class RecommendedListPage extends Component {
         this.addToPlayList = this.addToPlayList.bind(this);
         this.removeFromPlayList = this.removeFromPlayList.bind(this);
         this.onAudioClipStopped = this.onAudioClipStopped.bind(this);
+        this.onSortButtonClicked = this.onSortButtonClicked.bind(this);
         this.getUsersTopIds = this.getUsersTopIds.bind(this);
         this.getRecommendedTracksAndCreatePlaylist = this.getRecommendedTracksAndCreatePlaylist.bind(this);
         this.renderSortOption = this.renderSortOption.bind(this);
@@ -126,7 +139,7 @@ class RecommendedListPage extends Component {
         } catch (error) {
             console.log(error);
             await this.setState({
-                error: error.status + ' while getting recommended songs'
+                error: errorMessages[error.status]
             })
         }
     }
@@ -235,7 +248,7 @@ class RecommendedListPage extends Component {
         } catch (error) {
             console.log(error);
             await this.setState({
-                error: error.status + ' while adding to playlist'
+                error: errorMessages[error.status] + " while adding song to playlist"
             })       
         }
     }
@@ -322,6 +335,12 @@ class RecommendedListPage extends Component {
         }
     }
 
+    onSortButtonClicked() {
+        this.setState({
+            isSortedButtonClicked: !this.state.isSortedButtonClicked
+        });
+    }
+
     /*
     * Renders a RecommendedListItem with prop.listItem set to listItem
     * @param {Object}, listItem a SpotifyTrackObject with the artist's top songs appended
@@ -391,7 +410,7 @@ class RecommendedListPage extends Component {
        } catch (error) {
             console.log(error);
             this.setState({
-                error: 'error' + ' while sorting'
+                error: 'error' + ' while sorting your list'
             })
        }     
    }
@@ -402,61 +421,27 @@ class RecommendedListPage extends Component {
             errorMessage = 
                 <div>
                     <h2 className = 'error-header'>{'Something went wrong'}</h2>
-                    <h2 className = 'error-body'>{'Error:' + this.state.error}</h2>
+                    <h2 className = 'error-body'>{this.state.error}</h2>
                 </div>
         }
         
         if (this.state.isLoaded) {
             let listItems = this.state.recommendedList.map(this.renderItem);
-            let sortContent;
+            let sortButtons;
             if (this.state.isSortedButtonClicked) {
-                sortContent = sortOptions.map(this.renderSortOption);
+                sortButtons = sortOptions.map(this.renderSortOption);
             }
             return(
-                <AppContainer 
-                    header = 'Song Recommendations'
-                    content = {
-                        <div className = 'recommended-list-container'>
-                            {errorMessage}
-                            <audio 
-                                className = "audio-player" 
-                                id = {'audio-player'} 
-                                onEnded = {this.onAudioClipStopped}
-                                controls>
-                                <source id = {'audio-player-source'} src = {this.state.preview_url}></source>
-                            </audio>
-                                <div className = 'top-recommended-options-container'>
-                                    <a 
-                                        href = {'https://open.spotify.com/playlist/' + this.state.playListId}
-                                        target = '_blank'
-                                        rel="noopener noreferrer">
-                                        <SelectButton 
-                                            text = 'Playlist Link'
-                                            className = "App-link recommend-button expandable"
-                                        />
-                                    </a>
-                                    <div 
-                                        className = {'App-link recommend-button expandable'}
-                                        onClick = {() => this.setState(
-                                            {
-                                                isSortedButtonClicked: !this.state.isSortedButtonClicked
-                                            })}
-                                    >
-                                        Sort Songs
-                                        <div 
-                                            className = 'about-content centered'
-                                            style = 
-                                                {{display: this.state.isSortedButtonClicked ? 'flex' : 'none'}}>
-                                                {sortContent}
-                                        </div>
-                                    </div>     
-                                </div>
-                            <ol className = 'song-list'>
-                                {listItems}
-                            </ol>
-                        </div>
-                    }
-                />                   
+                <RecommendedListContainer
+                    errorMessage = {errorMessage}
+                    onAudioClipStopped = {this.onAudioClipStopped}
+                    audio_url = {this.state.audio_url}
+                    playListId = {this.state.playListId}
+                    onSortButtonClicked = {this.onSortButtonClicked}
+                    isSortButtonClicked = {this.state.isSortedButtonClicked}
+                    sortButtons = {sortButtons}
+                    recommendedListItems = {listItems}
+                />      
             )
         } else {
             let loadingMessage =  
