@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AppContainer from './app-container';
+import Expandable from './expandable';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class LoginPage extends Component {
     const aboutClassName = this.state.isAboutClicked ? 'App-link opening-page-header expandable clickable expanded'
       : 
       'App-link expandable clickable';
+
     console.log(this.state.isAboutClicked);
     return (
       <AppContainer
@@ -30,28 +32,34 @@ class LoginPage extends Component {
           content = {
             <div id = 'top' className = "opening-screen">
               <a className="App-link login  expandable clickable"
-                href = "/login">
+                href = "http://localhost:8888/login">
                 Login to Spotify to begin
               </a>
-              <div className = {aboutClassName}
-                    onClick = {this.onAboutClicked.bind(this)}>
-                    About FindVibes
-                    <div className = 'about-content'
-                          style = {{display: this.state.isAboutClicked ? 'flex' : 'none'}}>
-                      <p>We use your top songs and top artists from Spotify to create a personalized playlist for 
-                         you in whichever time period you want.
-                      </p>
-                      <p>We offer more flexibility than Spotify's
-                         usual playlist recommendations and let you finetune how you get your recommendations.
-                      </p>
-                      <p>Our site also offers 30 second music previews for your new songs and links
+              <Expandable
+                className = {aboutClassName}
+                onClick = {this.onAboutClicked.bind(this)}
+                header = {'About FindVibes'}
+                expandableChildClassName = {'about-content'}
+                isExpanded = {this.state.isAboutClicked}
+                display = {'flex'}
+                expandedContent = 
+                {
+                  <div>
+                    <p>We use your top songs and top artists from Spotify to create a personalized playlist for 
+                       you in whichever time period you want.
+                    </p>
+                    <p>We offer more flexibility than Spotify's
+                        usual playlist recommendations and let you finetune how you get your recommendations.
+                    </p>
+                    <p>Our site also offers 30 second music previews for your new songs and links
                        you to each artist's top songs and each song's album.
-                       </p>
-                      <p id = 'privacy'>We don't collect any of your Spotify data and permissions are used 
+                    </p>
+                    <p id = 'privacy'>We don't collect any of your Spotify data and permissions are used 
                       for the sake of creating the best and most relevant playlists for our users. 
-                      </p>
-                    </div>
-              </div>
+                    </p>
+                  </div>
+                }
+              />
             </div>
           }
       />    

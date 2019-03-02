@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SelectButton from '../select-button';
+import Expandable from '../expandable';
 
 class TopOptionsContainer extends Component {
     render() {
@@ -14,18 +15,15 @@ class TopOptionsContainer extends Component {
                         className = "App-link recommend-button expandable"
                     />
                 </a>
-                <div 
-                    className = {'App-link recommend-button expandable'}
-                    onClick = {() => this.props.onSortButtonClicked()}
-                >
-                    Sort Songs
-                    <div 
-                        className = 'about-content centered'
-                        style = {{display: this.props.isSortButtonClicked ? 'flex' : 'none'}}
-                    >
-                        {this.props.sortButtons}
-                    </div>
-                </div>     
+                <Expandable 
+                    className = 'App-link recommend-button expandable'
+                    onClick = {this.props.onSortButtonClicked}
+                    expandableChildClassName = 'about-content centered'
+                    header = 'Sort Songs'
+                    display = 'flex'
+                    isExpanded = {this.props.isSortButtonClicked}
+                    expandedContent = {this.props.sortButtons}
+                />    
             </div>
         );
     }
