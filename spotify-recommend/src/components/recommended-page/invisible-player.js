@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class InvisiblePlayer extends Component {
     render() {
@@ -11,10 +12,18 @@ class InvisiblePlayer extends Component {
             >
                 <source 
                     id = {this.props.sourceId} 
-                    src = {this.props.audioSource}></source>
+                    src = {this.props.audioSource}    
+                />
             </audio>
         );
     }
+}
+
+InvisiblePlayer.propTypes = {
+    audioId: PropTypes.string,
+    onEnded: PropTypes.func.isRequired,
+    sourceId: PropTypes.string,
+    audioSource: PropTypes.string.isRequired
 }
 
 export default InvisiblePlayer;

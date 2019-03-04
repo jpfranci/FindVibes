@@ -24,15 +24,14 @@ class LoginPage extends Component {
     const aboutClassName = this.state.isAboutClicked ? 'App-link opening-page-header expandable clickable expanded'
       : 
       'App-link expandable clickable';
-
-    console.log(this.state.isAboutClicked);
+      
     return (
       <AppContainer
           header = "Song Recommendations"
           content = {
             <div id = 'top' className = "opening-screen">
               <a className="App-link login  expandable clickable"
-                href = "http://localhost:8888/login">
+                href = "/login">
                 Login to Spotify to begin
               </a>
               <Expandable

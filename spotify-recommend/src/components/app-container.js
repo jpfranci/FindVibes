@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import logo from './spotify-logo.png';
 
 class AppContainer extends Component {
@@ -14,5 +15,11 @@ class AppContainer extends Component {
         )
     }
 }
+
+AppContainer.propTypes = {
+    header: PropTypes.string.isRequired,
+    content: PropTypes.node.isRequired
+}
+
 
 export default AppContainer;

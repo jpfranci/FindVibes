@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Collapse } from 'react-collapse';
 import { FaVolumeSlash } from 'react-icons/fa';
 import { IoIosPlayCircle } from "react-icons/io";
@@ -69,6 +70,8 @@ class RecommendedListItem extends Component {
     }
 
     getPlayOrPause(previewUrl) {
+        // compares previewUrl to the currently playing track on the player 
+        // and whether or not it is currently playing
         const isPlaying = (previewUrl === this.props.currentPlaying && this.props.isCurrentlyPlaying);
         if (!previewUrl) {
             return (<FaVolumeSlash 
@@ -124,6 +127,25 @@ class RecommendedListItem extends Component {
                 null
         );
     }
+}
+
+RecommendedListItem.propTypes = {
+    playClicked: PropTypes.func,
+    currentPlaying: PropTypes.string.isRequired, // the url currently playing
+    isCurrentlyPlaying: PropTypes.bool.isRequired, // bool representing if the audio player is currently playinh
+    addToPlayList: PropTypes.func.isRequired,
+    removeFromPlayList: PropTypes.func.isRequired,
+    listItem: PropTypes.shape({
+        album: PropTypes.object.isRequired,
+        artists: PropTypes.array.isRequired,
+        preview_url: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        external_urls: PropTypes.object.isRequired,
+        popularity: PropTypes.number.isRequired,
+        topTracks: PropTypes.shape({
+            tracks: PropTypes.array.isRequired
+        })
+    }).isRequired
 }
 
 export default RecommendedListItem; 

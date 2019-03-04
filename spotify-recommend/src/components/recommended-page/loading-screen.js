@@ -1,6 +1,7 @@
 import { ClimbingBoxLoader } from 'react-spinners';
 import React, { Component } from 'react';
 import AppContainer from '../app-container.js';
+import PropTypes from 'prop-types';
 
 class LoadingScreen extends Component {
     render() {
@@ -21,6 +22,10 @@ class LoadingScreen extends Component {
             />      
         );
     }
+}
+
+LoadingScreen.propTypes = {
+    loadingMessage: PropTypes.element.isRequired
 }
 
 export default LoadingScreen;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SpotifyWebApi from 'spotify-web-api-js';
 import RecommendedListItem from './recommended-list-item';
 import RecommendedListContainer from './recommended-list-container';
@@ -14,7 +15,7 @@ const sortOptions = [
 
 const errorMessages = {
     0: "There are some issues with some ad-blockers interfering with our requests with Spotify servers." +
-    " (Don't worry we don't have any ads)" + " Please whitelist us and try again.",
+    " (Don't worry we don't have any ads). Please whitelist us and try again.",
     400: "Sorry, page not found.",
     401: "Please refresh the page because permissions for Spotify has expired",
     429: "Site is going through heavy traffic. Please try again later",
@@ -36,9 +37,7 @@ class RecommendedListPage extends Component {
         this.state = {
             access_token: this.props.access_token,
             recommendedList: [],
-            country: null,
             error: null,
-            selectedSortOption: 'null',
             audio_url: "",
             isPlaying: false,
             isLoaded: false,
@@ -212,15 +211,13 @@ class RecommendedListPage extends Component {
                 {name: "Your Top Recommendations", 
                 description: "A playlist of recommended songs made with Find Vibes", public: false});
         
-            await spotifyApi.addTracksToPlaylist
-                (recommendedPlaylist.id, recommendedListSongs);       
+            await spotifyApi.addTracksToPlaylist(recommendedPlaylist.id, recommendedListSongs);       
             await this.setState({
                 playListId: recommendedPlaylist.id,
-                country: userId.country,
             });
 
-            let recommendedTracksWithArtistTop = await recommendedTracks.map
-                ((track) => this.addTopTracks(track, this.state.country));
+            let recommendedTracksWithArtistTop = await recommendedTracks.map(
+                (track) => this.addTopTracks(track, userId.country));
             // used to resolve promise array returned by mapping each track to a promise in async call
             recommendedTracksWithArtistTop = await Promise.all(recommendedTracksWithArtistTop);
 
@@ -411,7 +408,7 @@ class RecommendedListPage extends Component {
        } catch (error) {
             console.log(error);
             this.setState({
-                error: 'error' + ' while sorting your list'
+                error: 'error while sorting your list'
             })
        }     
    }
@@ -428,10 +425,7 @@ class RecommendedListPage extends Component {
         
         if (this.state.isLoaded) {
             let listItems = this.state.recommendedList.map(this.renderItem);
-            let sortButtons;
-            if (this.state.isSortedButtonClicked) {
-                sortButtons = sortOptions.map(this.renderSortOption);
-            }
+            let sortButtons = sortOptions.map(this.renderSortOption);
             return (
                 <RecommendedListContainer
                     errorMessage = {errorMessage}
@@ -457,6 +451,16 @@ class RecommendedListPage extends Component {
             );
         }
     }
+}
+
+RecommendedListPage.propTypes = {
+    access_token: PropTypes.string.isRequired,
+    options: PropTypes.shape({
+        timeRange: PropTypes.string,
+        playListLength: PropTypes.number,
+        recommendationsMethod: PropTypes.string,
+        useTopTracks: PropTypes.number
+    }).isRequired
 }
 
 export default RecommendedListPage;

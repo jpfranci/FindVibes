@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import OptionsBox from './options-box.js';
@@ -136,6 +137,10 @@ class OptionsPage extends Component {
             />                 
         )
     }
+}
+
+OptionsPage.propTypes = {
+    onOptionsChange: PropTypes.func.isRequired
 }
 
 export default OptionsPage;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import AppContainer from '../app-container';
 import InvisiblePlayer from './invisible-player';
 import TopOptionsContainer from './top-options-container';
@@ -31,6 +32,17 @@ class RecommendedListContainer extends Component {
             />           
         );
     }    
+}
+
+RecommendedListContainer.propTypes = {
+    errorMessage: PropTypes.node,
+    onAudioClipStopped: PropTypes.func.isRequired,
+    audio_url: PropTypes.string.isRequired,
+    playListId: PropTypes.string.isRequired,
+    onSortButtonClicked: PropTypes.func.isRequired,
+    isSortButtonClicked: PropTypes.bool.isRequired,
+    sortButtons: PropTypes.node,
+    recommendedListItems: PropTypes.node
 }
 
 export default RecommendedListContainer;

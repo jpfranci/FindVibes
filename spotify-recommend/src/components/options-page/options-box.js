@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class OptionsBox extends Component {
     render() {
@@ -18,6 +19,12 @@ class OptionsBox extends Component {
             </div>
         )
     }
+}
+
+OptionsBox.propTypes = {
+    header: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    content: PropTypes.node.isRequired
 }
 
 export default OptionsBox;

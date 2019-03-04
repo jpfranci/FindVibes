@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SelectButton from '../select-button';
 import Expandable from '../expandable';
 
@@ -27,6 +28,13 @@ class TopOptionsContainer extends Component {
             </div>
         );
     }
+}
+
+TopOptionsContainer.propTypes = {
+    playListId: PropTypes.string.isRequired,
+    onSortButtonClicked: PropTypes.func.isRequired,
+    isSortButtonClicked: PropTypes.bool.isRequired,
+    sortButtons: PropTypes.node.isRequired
 }
 
 export default TopOptionsContainer;

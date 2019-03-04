@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class SelectButton extends Component {
     render() {
@@ -13,6 +14,14 @@ class SelectButton extends Component {
             </p>
         )
     }
+}
+
+SelectButton.propTypes = {
+    active: PropTypes.bool,
+    activeClassName: PropTypes.string,
+    className: PropTypes.string,
+    onClick: PropTypes.func,
+    text: PropTypes.string.isRequired
 }
 
 export default SelectButton;

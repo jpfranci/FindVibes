@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FaSpotify, FaPlus, FaCheck } from 'react-icons/fa';
 import { IoIosArrowDown } from "react-icons/io";
 
@@ -56,7 +57,7 @@ class SongInfo extends Component {
                     className = "album-cover expandable clickable"
                     alt = "album cover"/>
                 <h2 
-                    className = "song-details"
+                    className = "song-details clickable"
                     onClick = {this.props.handleArrowClick}>
                     {this.props.artistName + " - " + this.props.songName} 
                 </h2>     
@@ -71,6 +72,22 @@ class SongInfo extends Component {
             </div>
         );
     } 
+}
+
+SongInfo.propTypes = {
+    albumName: PropTypes.string.isRequired,
+    albumUrl: PropTypes.string,
+    artistName: PropTypes.string.isRequired,
+    albumCover: PropTypes.string,
+    previewUrl: PropTypes.string,
+    songName: PropTypes.string.isRequired,
+    playInfo: PropTypes.node.isRequired,
+    handlePlayClick: PropTypes.func.isRequired,
+    handleArrowClick: PropTypes.func.isRequired,
+    removeFromPlayList: PropTypes.func,
+    spotifyUrl: PropTypes.string.isRequired,
+    popularity: PropTypes.number.isRequired,
+    isExpandable: PropTypes.bool.isRequired
 }
 
 export default SongInfo;

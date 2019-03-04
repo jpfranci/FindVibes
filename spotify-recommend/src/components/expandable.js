@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Expandable extends Component {
     render() {
@@ -17,6 +18,16 @@ class Expandable extends Component {
             </div>
         );
     }
+}
+
+Expandable.propTypes = {
+    onClick: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    expandableChildClassName: PropTypes.string,
+    header: PropTypes.string.isRequired,
+    isExpanded: PropTypes.bool.isRequired,
+    display: PropTypes.string.isRequired,
+    expandedContent: PropTypes.node.isRequired  
 }
 
 export default Expandable;
