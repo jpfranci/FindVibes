@@ -10,7 +10,6 @@ class RecommendedListItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            topTracks: this.props.listItem.topTracks,
             isOpened: false
         }
         this.handleListItemClicked = this.handleListItemClicked.bind(this);
