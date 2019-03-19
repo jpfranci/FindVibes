@@ -92,7 +92,7 @@ class RecommendedListPage extends Component {
         } catch (error) {
             console.log(error);
             await this.setState({
-                error: errorMessages[error.status] + " while adding song to playlist"
+                error: errorMessages[error.status]
             })       
         }
     }

@@ -5,8 +5,8 @@ const maxSeeds = 5;
 
 /* Note this class does not catch any exceptions so caller must catch any of the thrown exceptions */
 class MakeRecommendations {
-    constructor(props) {
-        this.props = props;
+    constructor(options) {
+        this.options = options;
         this.playListId = null;
     }
 
@@ -16,7 +16,7 @@ class MakeRecommendations {
     * Spotify playlist from recommended tracks
     */
    async getRecommendedTracksAndCreatePlaylist() {
-        await spotifyApi.setAccessToken(this.props.access_token);
+        await spotifyApi.setAccessToken(this.options.access_token);
 
         let usersTopIds = await this.getUsersTopIds();
         let recommendedTracks = [];
@@ -51,28 +51,28 @@ class MakeRecommendations {
     let topArtists;
     let topTracks;
     
-    if (this.props.options.recommendationsMethod === 'onlyArtist') {
+    if (this.options.options.recommendationsMethod === 'onlyArtist') {
         topArtists = await spotifyApi.getMyTopArtists({
-            limit: this.props.options.useTopTracks, 
-            time_range: this.props.options.timeRange
+            limit: this.options.options.useTopTracks, 
+            time_range: this.options.options.timeRange
         });
         userTopIds = {seed_artists: topArtists.items.map(artist => artist.id)};
     } 
     
-    else if (this.props.options.recommendationsMethod === 'split') {
-        const topTracksLen = Math.ceil(this.props.options.useTopTracks / 2);
-        const topArtistsLen = this.props.options.useTopTracks - topTracksLen;
+    else if (this.options.options.recommendationsMethod === 'split') {
+        const topTracksLen = Math.ceil(this.options.options.useTopTracks / 2);
+        const topArtistsLen = this.options.options.useTopTracks - topTracksLen;
 
         topTracks = await spotifyApi.getMyTopTracks({
             limit: topTracksLen,
-            time_range: this.props.options.timeRange
+            time_range: this.options.options.timeRange
         });
 
         userTopIds = {seed_tracks: topTracks.items.map(song => song.id)};
         if (topArtistsLen > 0) {
             topArtists = await spotifyApi.getMyTopArtists({
                 limit: topArtistsLen,
-                time_range: this.props.options.timeRange
+                time_range: this.options.options.timeRange
             });
             userTopIds = {
                 ...userTopIds, 
@@ -82,8 +82,8 @@ class MakeRecommendations {
     
     else {
         topTracks = await spotifyApi.getMyTopTracks({
-            limit: this.props.options.useTopTracks,
-            time_range: this.props.options.timeRange
+            limit: this.options.options.useTopTracks,
+            time_range: this.options.options.timeRange
         });
         userTopIds = {seed_tracks: topTracks.items.map(track => track.id)};
     } 
@@ -98,13 +98,13 @@ class MakeRecommendations {
     * @returns {SpotifyTrackObject[]} recommended tracks for this user
     */
     async getRecommendedTracks(userTopIds, seedOption) {
-        let numTracksToCreate = this.props.options.playListLength;
+        let numTracksToCreate = this.options.options.playListLength;
 
-        if (this.props.options.recommendationsMethod === 'split') {
+        if (this.options.options.recommendationsMethod === 'split') {
             if (seedOption === 'seed_tracks') {
-                numTracksToCreate = Math.ceil(this.props.options.playListLength/2);
+                numTracksToCreate = Math.ceil(this.options.options.playListLength/2);
             } else if (seedOption === 'seed_artists') {
-                numTracksToCreate = Math.floor(this.props.options.playListLength/2);
+                numTracksToCreate = Math.floor(this.options.options.playListLength/2);
             }
         }
         
