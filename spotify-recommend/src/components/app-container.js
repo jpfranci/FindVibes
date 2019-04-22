@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import logo from './spotify-logo.png';
 
 class AppContainer extends Component {
+    constructor(props) {
+        
+    }
     render() {
         return (
             <div id = "App" className = "App">
