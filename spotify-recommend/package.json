@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@emotion/core": "^10.0.7",
+    "axios": "^0.19.2",
     "rc-progress": "^2.3.0",
     "rc-slider": "^8.6.5",
     "react": "^16.8.3",
