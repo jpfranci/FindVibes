@@ -25,7 +25,6 @@ app.use(cors())
 
 app.get('/login', function(req, res) {
     const state = util.generateRandomString(16);
-
     // your application requests authorization
     const scope = 'user-read-private user-top-read user-read-playback-state playlist-modify-private';
     res.cookie(stateKey, state, {

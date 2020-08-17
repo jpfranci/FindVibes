@@ -5,10 +5,6 @@
     width: 35vmin;
   }
 
-  .about-content.centered {
-    margin-right: 1vw;
-  }
-
   .options-button {
     font-size: calc(10px + 1vmin);
   }
@@ -67,10 +63,6 @@
 
   .recommend-button {
     width: 30vmin;
-  }
-
-  .about-content.centered {
-    margin-right: 5vw;
   }
 
   .options-button {
@@ -208,13 +200,11 @@ a {
 }
 
 .sort-button {
-  background:  #c8d1c8;
+  background: #c8d1c8;
   border-radius: 2vmin;
-  width: 75%;
+  width: 90%;
   margin-top: -1vmin;
-  margin-left: 3vmin;
-  border: black;
-  border-width: 2px;
+  border: 2px black;
   text-align: center;
   padding: 2vmin;
 }
@@ -388,6 +378,16 @@ a {
   margin-top: 5vmin;
   flex-direction: column;
   margin-left: 1vmin;
+}
+
+.sort-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  font-size: calc(10px + 1vmin);
+  flex-direction: column;
+  margin-top: 5vmin;
 }
 
 .options-button {

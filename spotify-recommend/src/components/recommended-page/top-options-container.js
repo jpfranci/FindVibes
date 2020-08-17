@@ -19,7 +19,7 @@ class TopOptionsContainer extends Component {
                 <Expandable 
                     className = 'App-link recommend-button expandable'
                     onClick = {this.props.onSortButtonClicked}
-                    expandableChildClassName = 'about-content centered'
+                    expandableChildClassName = 'sort-content'
                     header = 'Sort Songs'
                     display = 'flex'
                     isExpanded = {this.props.isSortButtonClicked}
