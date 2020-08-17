@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MakeRecommendations from './make-recommendations.js';
+import RecommendationsService from './recommendations-service.js';
 import RecommendedListItem from './recommended-list-item';
 import RecommendedListContainer from './recommended-list-container';
 import SelectButton from '../select-button';
 import LoadingScreen from './loading-screen';
+import * as Cookies from "js-cookie";
 
 const sortOptions = [
     {value: 'popularity', label: 'by song popularity'},
@@ -40,7 +41,7 @@ class RecommendedListPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            access_token: this.props.access_token,
+            access_token: Cookies.get('access_token'),
             recommendedList: [],
             error: null,
             audio_url: "",
@@ -60,7 +61,11 @@ class RecommendedListPage extends Component {
         this.renderSortOption = this.renderSortOption.bind(this);
         this.sortList = this.sortList.bind(this);
         this.getRecommendations = this.getRecommendations.bind(this);
-        this.recommender = new MakeRecommendations(this.props);
+        console.log(this.props);
+        this.recommender = new RecommendationsService({
+            options: this.props.location.state.options,
+            access_token: this.state.access_token
+        });
 
         this.getRecommendations();
     }
@@ -74,6 +79,7 @@ class RecommendedListPage extends Component {
                 isLoaded: true
             });
         } catch(error) {
+            console.log(error)
             await this.setState({
                 error: errorMessages[error.status] + " while adding song to playlist"
             });
@@ -281,13 +287,12 @@ class RecommendedListPage extends Component {
 }
 
 RecommendedListPage.propTypes = {
-    access_token: PropTypes.string.isRequired,
     options: PropTypes.shape({
         timeRange: PropTypes.string,
         playListLength: PropTypes.number,
         recommendationsMethod: PropTypes.string,
         useTopTracks: PropTypes.number
-    }).isRequired
+    })
 }
 
 export default RecommendedListPage;

@@ -44,7 +44,7 @@
   }
 
   .opening-page-header {
-    font-weight: 575;
+    font-weight: 600;
   }
 
   .options-header {
@@ -112,15 +112,15 @@
   }
 
   .opening-page-header {
-    font-weight: 525;
+    font-weight: 500;
   }
 
   .options-header {
-    font-weight: 525;
+    font-weight: 500;
   }
 
   body {
-    font-weight: 425;
+    font-weight: 400;
   }
 
   .collapse-container {
@@ -425,4 +425,9 @@ a {
 
 .loading-label {
   color: #4dcc62;
+}
+
+.options-confirmation {
+  text-decoration: none;
+  color: black;
 }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import OptionsBox from './options-box.js';
 import SelectButton from '../select-button';
 import AppContainer from '../app-container';
+import {Link} from "react-router-dom";
 
 const timeRangeArray = [
     {name: 'short_term', text: 'The last 4 weeks'}, 
@@ -124,23 +124,21 @@ class OptionsPage extends Component {
                             header = {'Pick how many top songs or artists to use for your recommendations'}
                             content = {songNumberSlider}
                         />
-                        <div 
-                            className = 'submit-button expandable clickable'
-                            onClick = {() => {this.props.onOptionsChange(this.state)}}>
-                            <p 
-                                className = 'options-header'
-                            >
-                                Create your personalized playlist!</p>
+                        <div className="submit-button expandable clickable">
+                            <Link
+                                className = "options-confirmation"
+                                to={{
+                                    pathname: '/recommendations',
+                                    state: { options: this.state }
+                                }}>
+                                <p className = 'options-header'>Create your personalized playlist!</p>
+                            </Link>
                         </div>
                     </div>
                 }
             />                 
         )
     }
-}
-
-OptionsPage.propTypes = {
-    onOptionsChange: PropTypes.func.isRequired
 }
 
 export default OptionsPage;
