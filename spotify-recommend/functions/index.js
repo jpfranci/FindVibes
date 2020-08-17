@@ -10,14 +10,14 @@ const querystring = require('querystring');
 const util = require('./util');
 
 // for local development, override these values
-const server_url = 'https://find-vibes.firebaseapp.com';
-const client_url = 'https://find-vibes.firebaseapp.com';
+const server_url = 'http://localhost:3300';
+const client_url = 'http://localhost:3000';
 
 const redirect_uri = `${server_url}/spotifyCallback`;
 const stateKey = "__session";
 // to set firebase functions:config:set spotify.secret="YOUR_SECRET" spotify.client_id="YOUR_CLIENT_ID"
-const secret = functions.config().spotify.secret;
-const client_id = functions.config().spotify.client_id;
+const secret = "";
+const client_id = "";
 
 const app = express();
 app.use(cors())
@@ -81,7 +81,6 @@ app.get("/spotifyCallback", (req, res) => {
                 res.cookie('access_token', access_token, {
                     maxAge: 3600 * 1000,
                     sameSite: true,
-                    secure: true
                 });
                 res.redirect(`${client_url}/options`)
             }
@@ -90,3 +89,4 @@ app.get("/spotifyCallback", (req, res) => {
 });
 
 exports.widgets = functions.https.onRequest(app);
+app.listen(3300);

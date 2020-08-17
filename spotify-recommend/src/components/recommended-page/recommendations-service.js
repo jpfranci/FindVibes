@@ -32,12 +32,12 @@ class RecommendationsService {
                 usersTopIds.seed_tracks, 'seed_tracks');
             recommendedTracks = recommendedTracks.concat(recommendedTracksFromCall);
         }
-
+        //
         const recommendedPlaylist = await this.createPlaylist(recommendedTracks);
-        return {
-            recommendedList: recommendedPlaylist,
-            playListId: this.playListId
-        }
+        // return {
+        //     recommendedList: recommendedPlaylist,
+        //     playListId: this.playListId
+        // }
     } 
     
     /*
@@ -150,23 +150,40 @@ class RecommendationsService {
     * representing a user's recommended tracks
     */
     async createPlaylist(recommendedTracks) {
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
         if (recommendedTracks.length > 0) {
             const recommendedListSongs = recommendedTracks.map(song => 'spotify:track:' + song.id);
-            const userId = await spotifyApi.getMe();
+            const { id: userId, country } = await spotifyApi.getMe();
+            let toRemove = [];
+            for (let i = 10;; i += 50) {
+                const playlists = await spotifyApi.getUserPlaylists(userId, {
+                    limit: 50,
+                    offset: i
+                });
+                toRemove.push(...(playlists.items.filter(playlist => playlist.name.includes("Your Top Recommendations"))));
+                if (!playlists.next) {
+                    break;
+                }
+            }
 
-            const recommendedPlaylist = await spotifyApi.createPlaylist(userId.id, 
-                {name: "Your Top Recommendations", 
-                description: "A playlist of recommended songs made with Find Vibes", public: false});
-        
-            await spotifyApi.addTracksToPlaylist(recommendedPlaylist.id, recommendedListSongs);       
-            this.playListId = recommendedPlaylist.id;
-
-            let recommendedTracksWithArtistTop = await recommendedTracks.map(
-                (track) => this.addTopTracks(track, userId.country));
-            // used to resolve promise array returned by mapping each track to a promise in async call
-            recommendedTracksWithArtistTop = await Promise.all(recommendedTracksWithArtistTop);
-
-            return recommendedTracksWithArtistTop;
+            for (const playlist of toRemove) {
+                await spotifyApi.unfollowPlaylist(playlist.id)
+            }
+            //
+            // const recommendedPlaylist = await spotifyApi.createPlaylist(userId,
+            //     {name: "Your Top Recommendations",
+            //     description: "A playlist of recommended songs made with Find Vibes", public: false});
+            //
+            // await spotifyApi.addTracksToPlaylist(recommendedPlaylist.id, recommendedListSongs);
+            // this.playListId = recommendedPlaylist.id;
+            //
+            // let recommendedTracksWithArtistTop = await recommendedTracks.map(
+            //     (track) => this.addTopTracks(track, country));
+            // // used to resolve promise array returned by mapping each track to a promise in async call
+            // recommendedTracksWithArtistTop = await Promise.all(recommendedTracksWithArtistTop);
+            //
+            // return recommendedTracksWithArtistTop;
         } else {
             throw new Error({status: 20});
         }

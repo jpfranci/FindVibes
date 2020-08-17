@@ -31,7 +31,7 @@ class LoginPage extends Component {
           content = {
             <div id = 'top' className = "opening-screen">
               <a className="App-link login  expandable clickable"
-                href = "/login">
+                href = "http://localhost:3300/login">
                 Login to Spotify to begin
               </a>
               <Expandable
