@@ -4,7 +4,7 @@ const spotifyApi = new SpotifyWebApi();
 const maxSeeds = 5;
 
 /* Note this class does not catch any exceptions so caller must catch any of the thrown exceptions */
-class MakeRecommendations {
+class RecommendationsService {
     constructor(options) {
         this.options = options;
         this.playListId = null;
@@ -204,4 +204,4 @@ class MakeRecommendations {
     }
 }
 
-export default MakeRecommendations;
+export default RecommendationsService;
