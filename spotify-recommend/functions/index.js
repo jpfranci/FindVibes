@@ -28,7 +28,9 @@ app.get('/login', function(req, res) {
 
     // your application requests authorization
     const scope = 'user-read-private user-top-read user-read-playback-state playlist-modify-private';
-    res.cookie(stateKey, state);
+    res.cookie(stateKey, state, {
+        httpOnly: true
+    });
     res.setHeader('Cache-Control', 'no-store');
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
@@ -52,7 +54,8 @@ app.get("/spotifyCallback", (req, res) => {
         res.send("Spotify authorization has failed")
     } else {
         res.cookie(stateKey, state, {
-            expires: new Date(0)
+            expires: new Date(0),
+            httpOnly: true
         });
         const encodedAuthorizationValue = Buffer.from(`${client_id}:${secret}`).toString('base64');
         const authOptions = {
@@ -77,7 +80,8 @@ app.get("/spotifyCallback", (req, res) => {
 
                 res.cookie('access_token', access_token, {
                     maxAge: 3600 * 1000,
-                    sameSite: true
+                    sameSite: true,
+                    secure: true
                 });
                 res.redirect(`${client_url}/options`)
             }
